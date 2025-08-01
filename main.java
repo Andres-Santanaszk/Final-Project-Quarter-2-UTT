@@ -1,6 +1,7 @@
 public class main {
     public static void main(String[] args) {
         iniciarPrograma();
+        System.out.print("Iniciando");
     }
 
     public static void iniciarPrograma() {
