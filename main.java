@@ -6,7 +6,7 @@ public class main {
     public static void iniciarPrograma() {
         // Aquí se puede cargar datos, mostrar menú, etc.
         mostrarMenu();
-    }
+    }{}
 
     public static void mostrarMenu() {
         System.out.println("=== Bienvenido al Sistema ===");
