@@ -12,5 +12,4 @@ public class Main {
         System.out.println("=== Bienvenido al Sistema ===");
         // Aquí va tu lógica de navegación con switch-case o bucles
     }
-
 }

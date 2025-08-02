@@ -34,7 +34,7 @@ public class Login {
                 "\n¡Inicio de sesión exitoso, bienvenido, "
                 + usuarioNombre + "!\n"
             );
-            main.iniciarPrograma();
+            Main.iniciarPrograma();
         } else {
             System.out.println(
                 "\nHas excedido el número de intentos. Saliendo del sistema."
