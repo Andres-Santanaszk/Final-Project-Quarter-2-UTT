@@ -1,8 +1,19 @@
 import java.util.Scanner;
+
+import utils.AsciiArt;
+import utils.Color;
+
 public class Login {
 
     public static void main(String[] args) {
-        mostrarBanner();
+        
+        Color.mostrarAscii(AsciiArt.LOGIN);
+        try {
+        Thread.sleep(1000); 
+        } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        }
+        
 
         String[][] usuarios = DataManager.usuarios;
         Scanner sc = new Scanner(System.in);
@@ -30,10 +41,7 @@ public class Login {
         }
 
         if (acceso) {
-            System.out.println(
-                "\n¡Inicio de sesión exitoso, bienvenido, "
-                + usuarioNombre + "!\n"
-            );
+            Color.mostrarAscii(AsciiArt.BIENVENIDA);
             Main.iniciarPrograma();
         } else {
             System.out.println(
@@ -55,20 +63,5 @@ public class Login {
     }
 
 
-    private static void mostrarBanner() {
-        System.out.println();
-        System.out.println("______ _                           _     _                   ");
-        System.out.println("| ___ (_)                         (_)   | |                  ");
-        System.out.println("| |_/ /_  ___ _ ____   _____ _ __  _  __| | ___              ");
-        System.out.println("| ___ \\ |/ _ \\ '_ \\ \\ / / _ \\ '_ \\| |/ _` |/ _ \\             ");
-        System.out.println("| |_/ / |  __/ | | \\ V /  __/ | | | | (_| | (_) |            ");
-        System.out.println("\\____/|_|\\___|_| |_|\\_/ \\___|_| |_|_|\\__,_|\\___/             ");
-        System.out.println(" _____      _      _                            _            ");
-        System.out.println("|_   _|    (_)    (_)                          (_)           ");
-        System.out.println("  | | _ __  _  ___ _  __ _ _ __   ___  ___  ___ _  ___  _ __ ");
-        System.out.println("  | || '_ \\| |/ __| |/ _` | '__| / __|/ _ \\/ __| |/ _ \\| '_ \\");
-        System.out.println(" _| || | | | | (__| | (_| | |    \\__ \\  __/\\__ \\ | (_) | | | |");
-        System.out.println(" \\___/_| |_|_|\\___|_|\\__,_|_|    |___/\\___||___/_|\\___/|_| |_|");
-        System.out.println();
-    }
+    
 }

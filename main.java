@@ -1,3 +1,6 @@
+import utils.AsciiArt;
+import utils.Color;
+
 public class Main {
     public static void main(String[] args) {
         iniciarPrograma();
@@ -9,7 +12,13 @@ public class Main {
     }
 
     public static void mostrarMenu() {
-        System.out.println("=== Bienvenido al Sistema ===");
-        // Aquí va tu lógica de navegación con switch-case o bucles
+        try {
+        Thread.sleep(2000); 
+        } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        }
+        Color.mostrarAscii(AsciiArt.COLEGIO_NOMBRE);
+        
+        
     }
 }
