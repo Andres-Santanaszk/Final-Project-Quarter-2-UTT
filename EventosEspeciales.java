@@ -42,9 +42,10 @@ public class EventosEspeciales {
         System.out.println("5.- Regresar al menu anterior");
         int respuesta;
         int opcion = sc.nextInt();
+        int[][] matriz = DataManager.costoEventos();
         switch (opcion) {
             case 1:
-                System.out.println("El costo de la Posada es de $350");
+                System.out.println("El costo de la Posada es de: $ "+ matriz[0][0]);
                 
                     do {
                         System.out.println("¿Desea proceder con el pago?");
@@ -62,7 +63,7 @@ public class EventosEspeciales {
                     }while (respuesta != 1 && respuesta != 2);
                 break;
             case 2:
-                System.out.println("El costo del Dia del niño es de $350");
+                System.out.println("El costo del Dia del niño es de: $ "+ matriz[0][1]);
                 
                     do {
                         System.out.println("¿Desea proceder con el pago?");
@@ -80,7 +81,7 @@ public class EventosEspeciales {
                     }while (respuesta != 1 && respuesta != 2);
                 break;
             case 3:
-                System.out.println("El costo de la Graduación es de $350");
+                System.out.println("El costo de la Graduación es de: $ "+ matriz[0][2]);
                 do {
                         System.out.println("¿Desea proceder con el pago?");
                         System.out.println("1.- SI");
@@ -100,14 +101,18 @@ public class EventosEspeciales {
                 System.out.println("Ingrese el nombre del evento:");
                 String nombreEvento = sc.next();
                 System.out.println("Ingrese el monto requerido:");
-                Double montoEvento = sc.nextDouble();
+                int montoEvento = sc.nextInt();
+                DataManager.agregarDatos(nombreEvento, montoEvento);
+                DataManager.hh();
                 do {
                         System.out.println("¿Desea proceder con el pago?");
                         System.out.println("1.- SI");
                         System.out.println("2.- NO");
                         respuesta = sc.nextInt();
                             if (respuesta == 1){
-                                System.out.println("hola");
+                                System.out.println("Pago exitoso.");
+                                System.out.println("Regresando al menu...");
+                                EventosEspeciales.main(null);
                             }else if (respuesta == 2){
                                 System.out.println("No se pudo realizar el pago");
                                 EventosEspeciales.PreescolarEvento(sc);    
@@ -200,4 +205,4 @@ public class EventosEspeciales {
         return;
     
     }
-}
+} 
