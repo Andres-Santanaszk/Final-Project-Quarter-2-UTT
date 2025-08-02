@@ -13,7 +13,6 @@ public class Login {
         } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         }
-        
 
         String[][] usuarios = DataManager.usuarios;
         Scanner sc = new Scanner(System.in);
