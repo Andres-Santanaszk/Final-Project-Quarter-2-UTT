@@ -24,7 +24,7 @@ public class EventosEspeciales {
                         break;
                     case 4:
                         System.out.println("Saliendo de eventos especiales...");
-                            main.mostrarMenu();
+                            Main.mostrarMenu();
                         break;
                     default:
                         System.out.println("Opción inválida. Intenta de nuevo.");
