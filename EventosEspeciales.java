@@ -64,7 +64,7 @@ public class EventosEspeciales {
                     System.out.println("El costo del Viaje escolar es de: $ " + matriz[0][3]);
                     ConfirmarPago(sc);
                     return;
-                case "regresar al menu anterior":
+                case "regresar":
                     return;
                 default:
                     System.out.println("Opción inválida. Intenta de nuevo.\n");
