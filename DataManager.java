@@ -2,9 +2,9 @@
 public class DataManager {
 
     public static String[][] usuarios = {
-        {"andres", "andres123"},
-        {"angel", "angel123"},
-        {"julissa", "julissa123"},
+        {"Andres", "andres123"},
+        {"Angel", "angel123"},
+        {"Julissa", "julissa123"},
     };
 
     public static int [][] costoEventos(){

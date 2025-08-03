@@ -59,7 +59,7 @@ public class Cliente {
 
                 if ("OK".equals(rsp)) {
                     System.out.println("\n✅ Autenticación correcta\n");
-                    Main.iniciarPrograma();
+                    Main.mostrarMenu();
                     out.println("EXIT");
                     return;
                 }

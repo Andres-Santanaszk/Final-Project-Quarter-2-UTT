@@ -21,10 +21,12 @@ public class Login {
         String usuarioNombre = "";
 
         while (intentos < 3 && !acceso) {
-            System.out.print("Usuario: ");
+            System.out.println();
+            System.out.print(Color.BLUE + "Usuario: " + Color.RESET);
             String user = sc.nextLine().trim();
 
-            System.out.print("Contraseña: ");
+            System.out.println();
+            System.out.print(Color.BLUE + "Constraseña: " + Color.RESET);
             String pass = sc.nextLine().trim();
 
             if (validar(user, pass, usuarios)) {
@@ -32,26 +34,19 @@ public class Login {
                 usuarioNombre = user;
             } else {
                 intentos++;
-                System.out.println(
-                    "Usuario o contraseña incorrecta. Intento "
-                    + intentos + " de 3.\n"
-                );
+                System.out.println(Color.RED + "Usuario o contraseña incorrecta. Intento "+ intentos + " de 3.\n" + Color.RESET);
             }
         }
 
         if (acceso) {
             Color.mostrarAscii(AsciiArt.BIENVENIDA);
-            Main.iniciarPrograma();
         } else {
-            System.out.println(
-                "\nHas excedido el número de intentos. Saliendo del sistema."
-            );
+            System.out.println(Color.RED + "\nHas excedido el Andnúmero de intentos. Saliendo del sistema." + Color.RESET);
         }
 
         sc.close();
     }
 
-        // la dejé en private para que solamente sea accesible desde dentro de la misma clase
         public static boolean validar(String user,String password,String[][] usuarios) {
         for (int i = 0; i < usuarios.length; i++) {
             if (usuarios[i][0].equals(user) && usuarios[i][1].equals(password)) {
