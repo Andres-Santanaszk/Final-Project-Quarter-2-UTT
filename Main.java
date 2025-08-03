@@ -9,10 +9,11 @@ public class Main {
 
     public static void mostrarMenu() {
         try {
-        Thread.sleep(2000); 
+        Thread.sleep(1000); 
         } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
-        } 
+        }
         Color.mostrarAscii(AsciiArt.COLEGIO_NOMBRE);
+        
     }
 }
