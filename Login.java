@@ -32,7 +32,8 @@ public class Login {
             if (validar(user, pass, usuarios)) {
                 acceso = true;
                 usuarioNombre = user;
-            } else {
+            } 
+            else {
                 intentos++;
                 System.out.println(Color.RED + "Usuario o contraseña incorrecta. Intento "+ intentos + " de 3.\n" + Color.RESET);
             }
@@ -43,8 +44,13 @@ public class Login {
         } else {
             System.out.println(Color.RED + "\nHas excedido el Andnúmero de intentos. Saliendo del sistema." + Color.RESET);
         }
-
-        sc.close();
+        
+        for (int i = 0; i < usuarios.length; i++) {
+            if (usuarios[i][0].equals(usuarioNombre)) {
+            DataManager.usuarioActual = i;
+            break;
+        }
+    }
     }
 
         public static boolean validar(String user,String password,String[][] usuarios) {
@@ -55,7 +61,4 @@ public class Login {
         }
         return false;
     }
-
-
-    
 }

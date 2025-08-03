@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 import utils.AsciiArt;
 import utils.Color;
 
@@ -8,12 +10,50 @@ public class Main {
     }
 
     public static void mostrarMenu() {
+        Scanner sc = new Scanner(System.in);
         try {
         Thread.sleep(1000); 
         } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         }
-        Color.mostrarAscii(AsciiArt.COLEGIO_NOMBRE);
         
+        Color.mostrarAscii(AsciiArt.COLEGIO_NOMBRE);
+
+        while (true) {
+        System.out.println(Color.RED + "╔════════════════════════════════════════════╗" + Color.RESET);
+    System.out.println(Color.RED + "║         Colegio Independencia              ║" + Color.RESET);
+    System.out.println(Color.RED + "╠════════════════════════════════════════════╣" + Color.RESET);
+
+    // Opciones (azul)
+    System.out.print(Color.BLUE);
+    System.out.printf("║  %-2s %-38s ║\n", "1.", "Cobros anuales");
+    System.out.printf("║  %-2s %-38s ║\n", "2.", "Pago de mensualidades");
+    System.out.printf("║  %-2s %-38s ║\n", "3.", "Eventos especiales");
+    System.out.printf("║  %-2s %-38s ║\n", "4.", "Configuración del usuario");
+    System.out.printf("║  %-2s %-38s ║\n", "5.", "Cambiar de usuario");
+    System.out.printf("║  %-2s %-38s ║\n", "6.", "Cerrar sesión");
+    System.out.print(Color.RESET);  // importante para no seguir en azul
+
+    // Parte inferior (rojo)
+    System.out.println(Color.RED + "╚════════════════════════════════════════════╝" + Color.RESET);
+    System.out.print(">> ");
+    int opcion = sc.nextInt();
+
+    
+        switch (opcion) {
+            case 1:
+                CobrosAnuales.main(null);
+                break;
+            case 3:
+                EventosEspeciales.main(null);
+            case 5:
+                Login.main(null);
+            case 6:
+                break;
+            default:
+                System.out.println("No se ingresó una opción valida.");
+                break;
+            }
+        }
     }
 }
