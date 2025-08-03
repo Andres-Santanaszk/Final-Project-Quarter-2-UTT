@@ -19,6 +19,5 @@ public class Main {
         }
         Color.mostrarAscii(AsciiArt.COLEGIO_NOMBRE);
         
-        
     }
 }
