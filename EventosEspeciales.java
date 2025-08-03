@@ -104,7 +104,7 @@ public class EventosEspeciales {
                     System.out.println("El costo de las Fotos escolares es de: $ " + matriz[1][3]);
                     ConfirmarPago(sc);
                     return;
-                case "regresar al menu anterior":
+                case "regresar":
                     return;
                 default:
                     System.out.println("Opción inválida. Intenta de nuevo.\n");
@@ -145,7 +145,7 @@ public class EventosEspeciales {
                     System.out.println("El costo de las Fotos escolares es de: $ " + matriz[2][3]);
                     ConfirmarPago(sc);
                     return;
-                case "regresar al menu anterior":
+                case "regresar":
                     return;
                 default:
                     System.out.println("Opción inválida. Intenta de nuevo.\n");
