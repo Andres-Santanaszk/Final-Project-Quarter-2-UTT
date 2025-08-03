@@ -12,24 +12,25 @@ public class EventosEspeciales {
             System.out.println("4. Salir");
             
             int opcion = sc.nextInt();
-            switch (opcion) {
-                case 1:
-                    PreescolarEvento(sc);
-                    break;
-                case 2:
-                    PrimariaEvento(sc);
-                    break;
-                case 3:
-                    SecundariaEvento(sc);
-                    break;
-                case 4:
-                    System.out.println("Saliendo de eventos especiales...");
-                    main.mostrarMenu();
-                    break;
-                default:
-                    System.out.println("Opción inválida. Intenta de nuevo.");
-                    EventosEspeciales.main(args);
-            }   
+                switch (opcion) {
+                    case 1:
+                        PreescolarEvento(sc);
+                        break;
+                    case 2:
+                        PrimariaEvento(sc);
+                        break;
+                    case 3:
+                        SecundariaEvento(sc);
+                        break;
+                    case 4:
+                        System.out.println("Saliendo de eventos especiales...");
+                            main.mostrarMenu();
+                        break;
+                    default:
+                        System.out.println("Opción inválida. Intenta de nuevo.");
+                            EventosEspeciales.main(args);
+                        break;
+                }   
     }
 
     public static void PreescolarEvento(Scanner sc){
@@ -42,33 +43,33 @@ public class EventosEspeciales {
 
         int opcion = sc.nextInt();
         int[][] matriz = DataManager.costoEventos();
-        switch (opcion) {
-            case 1:
-                System.out.println("El costo del Festival de Navidad es de: $ "+ matriz[0][0]);
-                    ConfirmarPago(sc);
-                break;
-            case 2:
-                System.out.println("El costo del Dia del niño es de: $ "+ matriz[0][1]);
-                    ConfirmarPago(sc);
-                break;
-            case 3:
-                System.out.println("El costo de la Graduación es de: $ "+ matriz[0][2]);
-                    ConfirmarPago(sc);
-                break;
-            case 4:
-                System.out.println("El costo del Viaje escolar es de: $ "+ matriz[0][3]);
-                    ConfirmarPago(sc);
-                break;
-            case 5:
-                System.out.println("Volviendo al menu anterior...");
-                EventosEspeciales.main(null);
-                break;
-            default :
-            System.out.println("Selecciona una opcion valida...");
-                EventosEspeciales.PreescolarEvento(sc);;
-                break;
-        }
-       return;
+            switch (opcion) {
+                case 1:
+                    System.out.println("El costo del Festival de Navidad es de: $ "+ matriz[0][0]);
+                        ConfirmarPago(sc);
+                    break;
+                case 2:
+                    System.out.println("El costo del Dia del niño es de: $ "+ matriz[0][1]);
+                        ConfirmarPago(sc);
+                    break;
+                case 3:
+                    System.out.println("El costo de la Graduación es de: $ "+ matriz[0][2]);
+                        ConfirmarPago(sc);
+                    break;
+                case 4:
+                    System.out.println("El costo del Viaje escolar es de: $ "+ matriz[0][3]);
+                        ConfirmarPago(sc);
+                    break;
+                case 5:
+                    System.out.println("Volviendo al menu anterior...");
+                        EventosEspeciales.main(null);
+                    break;
+                default :
+                    System.out.println("Selecciona una opcion valida...");
+                        EventosEspeciales.PreescolarEvento(sc);;
+                    break;
+            }
+        return;
     }
 
     public static void PrimariaEvento(Scanner sc){
@@ -81,33 +82,33 @@ public class EventosEspeciales {
 
         int opcion = sc.nextInt();
         int[][] matriz = DataManager.costoEventos();
-        switch (opcion) {
-            case 1:
-                System.out.println("El costo del Festival de navidad es de: $ "+ matriz[1][0]);
-                    ConfirmarPago(sc);
-                break;
-            case 2:
-                System.out.println("El costo de los Talleres especiales es de: $ "+ matriz[1][1]);
-                    ConfirmarPago(sc);
-                break;
-            case 3:
-                System.out.println("El costo de la Graduación es de: $ "+ matriz[1][2]);
-                    ConfirmarPago(sc);
-                break;
-            case 4:
-                System.out.println("El costo de las Fotos Escolares es de: $ "+ matriz[1][3]);
-                    ConfirmarPago(sc);
-                break;
-            case 5:
-                System.out.println("Volviendo al menu anterior...");
-                EventosEspeciales.main(null);
-                break;
-            default :
-            System.out.println("Selecciona una opcion valida...");
-                EventosEspeciales.PrimariaEvento(sc);
-                break;
-        }
-       return;
+            switch (opcion) {
+                case 1:
+                    System.out.println("El costo del Festival de navidad es de: $ "+ matriz[1][0]);
+                        ConfirmarPago(sc);
+                    break;
+                case 2:
+                    System.out.println("El costo de los Talleres especiales es de: $ "+ matriz[1][1]);
+                        ConfirmarPago(sc);
+                    break;
+                case 3:
+                    System.out.println("El costo de la Graduación es de: $ "+ matriz[1][2]);
+                        ConfirmarPago(sc);
+                    break;
+                case 4:
+                    System.out.println("El costo de las Fotos Escolares es de: $ "+ matriz[1][3]);
+                        ConfirmarPago(sc);
+                    break;
+                case 5:
+                    System.out.println("Volviendo al menu anterior...");
+                        EventosEspeciales.main(null);
+                    break;
+                default :
+                    System.out.println("Selecciona una opcion valida...");
+                        EventosEspeciales.PrimariaEvento(sc);
+                    break;
+            }
+        return;
     }
 
     public static void SecundariaEvento(Scanner sc){
@@ -120,54 +121,54 @@ public class EventosEspeciales {
 
         int opcion = sc.nextInt(); 
         int[][] matriz = DataManager.costoEventos();
-        switch (opcion) {
-            case 1:
-                System.out.println("El costo del Viaje de generación es de: $ "+ matriz[2][0]);
-                    ConfirmarPago(sc);
-                break;
-            case 2:
-                System.out.println("El costo de los Talleres / Campamento de verano es de: $ "+ matriz[2][1]);
-                    ConfirmarPago(sc);
-                break;
-            case 3:
-                System.out.println("El costo de la Graduación es de: $ "+ matriz[2][2]);
-                    ConfirmarPago(sc);
-                break;
-            case 4:
-                System.out.println("El costo de las Fotos escolares es de: $ "+ matriz[2][3]);
-                    ConfirmarPago(sc);
-                break;
-            case 5:
-                System.out.println("Volviendo al menu anterior...");
-                EventosEspeciales.main(null);
-                break;
-            default :
-            System.out.println("Selecciona una opcion valida...");
-                EventosEspeciales.SecundariaEvento(sc);
-                break;
-        }
-       return;
+            switch (opcion) {
+                case 1:
+                    System.out.println("El costo del Viaje de generación es de: $ "+ matriz[2][0]);
+                        ConfirmarPago(sc);
+                    break;
+                case 2:
+                    System.out.println("El costo de los Talleres / Campamento de verano es de: $ "+ matriz[2][1]);
+                        ConfirmarPago(sc);
+                    break;
+                case 3:
+                    System.out.println("El costo de la Graduación es de: $ "+ matriz[2][2]);
+                        ConfirmarPago(sc);
+                    break;
+                case 4:
+                    System.out.println("El costo de las Fotos escolares es de: $ "+ matriz[2][3]);
+                        ConfirmarPago(sc);
+                    break;
+                case 5:
+                    System.out.println("Volviendo al menu anterior...");
+                        EventosEspeciales.main(null);
+                    break;
+                default :
+                    System.out.println("Selecciona una opcion valida...");
+                        EventosEspeciales.SecundariaEvento(sc);
+                    break;
+            }
+        return;
     }
 
     public static void ConfirmarPago(Scanner sc){
         int respuesta;
-        do {
-            System.out.println("¿Desea proceder con el pago?");
-            System.out.println("1.- SI");
-            System.out.println("2.- NO");
-            respuesta = sc.nextInt();
-                if (respuesta == 1){
-                    System.out.println("Pago exitoso.");
-                    System.out.println("Regresando al menu...");
-                        EventosEspeciales.main(null);
-                }else if (respuesta == 2){
-                    System.out.println("No se pudo realizar el pago");
-                        EventosEspeciales.main(null);    
-                }else {
-                    System.out.println("Ingrese una opcion valida.");
-                }
-        }while (respuesta != 1 && respuesta != 2);
-    return;
+            do {
+                System.out.println("¿Desea proceder con el pago?");
+                System.out.println("1.- SI");
+                System.out.println("2.- NO");
+                respuesta = sc.nextInt();
+                    if (respuesta == 1){
+                        System.out.println("Pago exitoso.");
+                        System.out.println("Regresando al menu...");
+                            EventosEspeciales.main(null);
+                    }else if (respuesta == 2){
+                        System.out.println("No se pudo realizar el pago");
+                            EventosEspeciales.main(null);    
+                    }else {
+                        System.out.println("Ingrese una opcion valida.");
+                    }
+            }while (respuesta != 1 && respuesta != 2);
+        return;
     }
 
 } 
