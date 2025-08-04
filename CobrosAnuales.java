@@ -28,7 +28,6 @@ public class CobrosAnuales {
 
         int nivel = 0;
 
-        // Bucle para seleccionar nivel y luego entrar al menú
         while (true) {
             System.out.println("\nSeleccione nivel educativo:");
             System.out.println("1. Preescolar");
