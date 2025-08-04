@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) {
         Login.main(null);
         mostrarMenu();
+
     }
 
     public static void mostrarMenu() {
@@ -16,7 +17,7 @@ public class Main {
         } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         }
-        
+        double saldo_disponible = DataManager.saldos[DataManager.usuarioActual];
         Color.mostrarAscii(AsciiArt.COLEGIO_NOMBRE);
 
         while (true) {
@@ -32,9 +33,7 @@ public class Main {
     System.out.printf("║  %-2s %-38s ║\n", "4.", "Consulta de saldo");
     System.out.printf("║  %-2s %-38s ║\n", "5.", "Cambiar de usuario");
     System.out.printf("║  %-2s %-38s ║\n", "6.", "Cerrar sesión");
-    System.out.print(Color.RESET);  // importante para no seguir en azul
-
-    // Parte inferior (rojo)
+    System.out.print(Color.RESET); 
     System.out.println(Color.RED + "╚════════════════════════════════════════════╝" + Color.RESET);
     System.out.print(">> ");
     int opcion = sc.nextInt();
@@ -44,13 +43,16 @@ public class Main {
             case 1:
                 CobrosAnuales.main(null);
                 break;
+            case 2:
+                break;
             case 3:
                 EventosEspeciales.main(null);
                 break;
             case 4:
-
+                System.out.println("Su saldo es de " + saldo_disponible + "$");
+                break;
             case 5:
-                Login.main(null);
+                Main.main(null);
                 break;
             case 6:
                 break;

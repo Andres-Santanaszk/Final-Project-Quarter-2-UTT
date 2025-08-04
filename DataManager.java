@@ -10,7 +10,7 @@ public class DataManager {
     public static double[] saldos = {9504.93, 13289.21, 12978.90};
 
     public static int usuarioActual = -1;
-    
+
     public static int [][] costoEventos(){
 
         int[][] costos = {

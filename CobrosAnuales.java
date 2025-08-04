@@ -5,95 +5,117 @@ public class CobrosAnuales {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // Niveles: 0-Preescolar, 1-Primaria, 2-Secundaria
-        // Tipos: 0-Inscripción, 1-Mantenimiento
         double[][] tarifas = {
-            {800.0, 400.0},   // Preescolar
-            {1000.0, 500.0},  // Primaria
-            {1200.0, 600.0}   // Secundaria
+            {800.0, 400.0},  
+            {1000.0, 500.0},
+            {1200.0, 600.0}   
         };
 
-        // Opcionales: 0-Papelería, 1-Uniformes
         double[][] tarifasOpc = {
             {150.0, 300.0},   // Preescolar
             {200.0, 350.0},   // Primaria
             {250.0, 400.0}    // Secundaria
         };
 
-        // Acumuladores de cobros
-        double[][] acumulados = new double[3][2];       // [nivel][tipo]
-        double[][] acumuladosOpc = new double[3][2];    // [nivel][opcional]
-        int deuda_total = 0;
-        int indiceUsuario = DataManager.usuarioActual;
-        double saldo_disponible = DataManager.saldos[indiceUsuario];
+        String[] nombresNivel = {"Preescolar", "Primaria", "Secundaria"};
+        String[] nombresOpcionales = {"papelería", "uniformes"};
 
+        double[][] acumulados = new double[3][2];     
+        double[][] acumuladosOpc = new double[3][2];  
+
+        double deuda_total = 0;
+        double saldo_disponible = DataManager.saldos[DataManager.usuarioActual];
+
+        int nivel = 0;
+
+        // Bucle para seleccionar nivel y luego entrar al menú
         while (true) {
-            System.out.println("\n=== MENÚ COBROS ANUALES ===");
-            System.out.println("1. Cobro inscripción");
-            System.out.println("2. Cobro mantenimiento");
-            System.out.println("3. Cobro opcionales");
-            System.out.println("0. Salir");
-            System.out.print("Opción: ");
-            int opcion = sc.nextInt();
+            System.out.println("\nSeleccione nivel educativo:");
+            System.out.println("1. Preescolar");
+            System.out.println("2. Primaria");
+            System.out.println("3. Secundaria");
+            System.out.println("0. Finalizar y ver resumen");
+            System.out.print("Nivel: ");
+            int entrada = sc.nextInt();
 
-            if (opcion == 0) break;
+            if (entrada == 0) break;
 
-            int nivel = seleccionarNivel(sc); // indice del nivel educativo
+            if (entrada < 1 || entrada > 3) {
+                System.out.println(">> Nivel inválido");
+                continue;
+            }
 
-            switch (opcion) {
-                case 1:
-                case 2:
-                    int tipo = opcion - 1;  // parte del indice
-                    double monto = tarifas[nivel][tipo];
-                    if (tipo == 0) {
-                    System.out.printf("Cobro %s [%s]: $%.2f\n", "inscripción", obtenerNombreNivel(nivel), monto);
-                    }
-                    else {
-                        System.out.printf("Cobro %s [%s]: $%.2f\n", "Mantenimiento", obtenerNombreNivel(nivel), monto);
-                    }
-                    acumulados[nivel][tipo] += monto;
-                    break;
+            nivel = entrada - 1;
 
-                case 3:
-                    while (true) {
-                        System.out.println("\n  -- OPCIONALES [" + obtenerNombreNivel(nivel) + "] --");
-                        System.out.println("  1. Papelería: $" + String.format("%.2f", tarifasOpc[nivel][0]));
-                        System.out.println("  2. Uniformes: $" + String.format("%.2f", tarifasOpc[nivel][1]));
-                        System.out.println("  0. Volver");
-                        System.out.print("  Opción: ");
-                        int opc = sc.nextInt();
+            while (true) {
+                System.out.println("\n=== MENÚ COBROS ANUALES [" + nombresNivel[nivel] + "] ===");
+                System.out.println("1. Cobro inscripción");
+                System.out.println("2. Cobro mantenimiento");
+                System.out.println("3. Cobro opcionales");
+                System.out.println("0. Cambiar nivel");
+                System.out.print("Opción: ");
+                int opcion = sc.nextInt();
 
-                        if (opc == 0) break;
+                if (opcion == 0) break;
 
-                        if (opc == 1 || opc == 2) {
-                            int opcIndex = opc - 1;
-                            double montoOpc = tarifasOpc[nivel][opcIndex];
-                            System.out.printf("  Cobro %s [%s]: $%.2f\n",
-                                opcIndex == 0 ? "papelería" : "uniformes",
-                                obtenerNombreNivel(nivel), montoOpc);
-                            acumuladosOpc[nivel][opcIndex] += montoOpc;
-                        } else {
-                            System.out.println("  >> Opción inválida");
+                switch (opcion) {
+                    case 1:
+                        int tipo = 0;
+                        double monto = tarifas[nivel][tipo];
+                        System.out.printf("Cobro %s [%s]: $%.2f\n", "inscripción", nombresNivel[nivel], monto);
+                        acumulados[nivel][tipo] += monto;
+                        break;
+
+                    case 2:
+                        tipo = 1;
+                        monto = tarifas[nivel][tipo];
+                        System.out.printf("Cobro %s [%s]: $%.2f\n", "Mantenimiento", nombresNivel[nivel], monto);
+                        acumulados[nivel][tipo] += monto;
+                        break;
+
+                    case 3:
+                        while (true) {
+                            System.out.println("\n  -- OPCIONALES [" + nombresNivel[nivel] + "] --");
+                            System.out.println("  1. Papelería: $" + String.format("%.2f", tarifasOpc[nivel][0]));
+                            System.out.println("  2. Uniformes: $" + String.format("%.2f", tarifasOpc[nivel][1]));
+                            System.out.println("  0. Volver");
+                            System.out.print("  Opción: ");
+                            int opc = sc.nextInt();
+
+                            if (opc == 0) break;
+
+                            if (opc == 1 || opc == 2) {
+                                int opcional_indice = opc - 1;
+                                double monto_opcional = tarifasOpc[nivel][opcional_indice];
+                                String nombre_opcional = nombresOpcionales[opcional_indice];
+                                System.out.printf("  Cobro %s [%s]: $%.2f\n", nombre_opcional, nombresNivel[nivel], monto_opcional);
+                                acumuladosOpc[nivel][opcional_indice] += monto_opcional;
+                            } else {
+                                System.out.println("  >> Opción inválida");
+                            }
                         }
-                    }
-                    break;
+                        break;
 
-                default:
-                    System.out.println(">> Opción inválida");
+                    default:
+                        System.out.println(">> Opción inválida");
+                }
             }
         }
 
-        // Mostrar resumen final
-        System.out.println("\n=== RECIBO ===");
+        System.out.println("\n=== RECIBO GENERAL ===");
         for (int i = 0; i < 3; i++) {
-            System.out.println("Nivel: " + obtenerNombreNivel(i));
-            if (acumulados[i][0] > 0){
-            System.out.printf("  Inscripción:   $%.2f\n", acumulados[i][0]);
-            deuda_total += acumulados[i][0];
+            boolean tieneCobros = acumulados[i][0] > 0 || acumulados[i][1] > 0 || acumuladosOpc[i][0] > 0 || acumuladosOpc[i][1] > 0;
+            if (!tieneCobros) continue;
+
+            System.out.println("Nivel: " + nombresNivel[i]);
+
+            if (acumulados[i][0] > 0) {
+                System.out.printf("  Inscripción:   $%.2f\n", acumulados[i][0]);
+                deuda_total += acumulados[i][0];
             }
             if (acumulados[i][1] > 0) {
-            System.out.printf("  Mantenimiento: $%.2f\n", acumulados[i][1]);
-            deuda_total += acumulados[i][1];
+                System.out.printf("  Mantenimiento: $%.2f\n", acumulados[i][1]);
+                deuda_total += acumulados[i][1];
             }
             if (acumuladosOpc[i][0] > 0) {
                 System.out.printf("  Papelería:     $%.2f\n", acumuladosOpc[i][0]);
@@ -104,23 +126,13 @@ public class CobrosAnuales {
                 deuda_total += acumuladosOpc[i][1];
             }
         }
-        System.out.println("Su saldo es: " + saldo_disponible
-        + "\nEl total a pagar es de: " + deuda_total + "\nSaldo restante: " + (saldo_disponible - deuda_total));
+
+        double saldo_restante = saldo_disponible - deuda_total;
+        System.out.println("\nSu saldo es: " + saldo_disponible);
+        System.out.println("El total a pagar es de: " + deuda_total);
+        System.out.println("Saldo restante: " + saldo_restante);
+
+        DataManager.saldos[DataManager.usuarioActual] = saldo_restante;
         Main.mostrarMenu();
-    }
-
-    public static int seleccionarNivel(Scanner sc) {
-        System.out.println("\nSeleccione nivel:");
-        System.out.println("1. Preescolar");
-        System.out.println("2. Primaria");
-        System.out.println("3. Secundaria");
-        System.out.print("Nivel: ");
-        int nivel = sc.nextInt();
-        return nivel - 1;
-    }
-
-    public static String obtenerNombreNivel(int nivel) {
-        String[] nombres = {"Preescolar", "Primaria", "Secundaria"};
-        return nombres[nivel];
     }
 }
