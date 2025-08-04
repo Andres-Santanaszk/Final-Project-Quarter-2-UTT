@@ -29,7 +29,7 @@ public class Main {
     System.out.printf("║  %-2s %-38s ║\n", "1.", "Cobros anuales");
     System.out.printf("║  %-2s %-38s ║\n", "2.", "Pago de mensualidades");
     System.out.printf("║  %-2s %-38s ║\n", "3.", "Eventos especiales");
-    System.out.printf("║  %-2s %-38s ║\n", "4.", "Configuración del usuario");
+    System.out.printf("║  %-2s %-38s ║\n", "4.", "Consulta de saldo");
     System.out.printf("║  %-2s %-38s ║\n", "5.", "Cambiar de usuario");
     System.out.printf("║  %-2s %-38s ║\n", "6.", "Cerrar sesión");
     System.out.print(Color.RESET);  // importante para no seguir en azul
@@ -46,8 +46,12 @@ public class Main {
                 break;
             case 3:
                 EventosEspeciales.main(null);
+                break;
+            case 4:
+
             case 5:
                 Login.main(null);
+                break;
             case 6:
                 break;
             default:

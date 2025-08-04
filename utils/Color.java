@@ -9,7 +9,7 @@ public class Color {
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN   = "\u001B[36m";
 
-    private static final String[] COLORES = {RED, YELLOW, GREEN, CYAN, BLUE, PURPLE};
+    public static final String[] COLORES = {RED, YELLOW, GREEN, CYAN, BLUE, PURPLE};
 
     /** Imprime un array de líneas ASCII con colores cíclicos */
     public static void mostrarAscii(String[] asciiLines) {
