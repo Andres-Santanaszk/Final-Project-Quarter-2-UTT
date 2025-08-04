@@ -7,6 +7,10 @@ public class DataManager {
         {"Julissa", "julissa123"},
     };
     
+    public static String[][] alumnos = {
+        {"Enrique", "E", }
+    };
+
     public static double[] saldos = {9504.93, 13289.21, 12978.90};
 
     public static int usuarioActual = -1;

@@ -73,27 +73,38 @@ public class CobrosAnuales {
                         break;
 
                     case 3:
-                        while (true) {
-                            System.out.println("\n  -- OPCIONALES [" + nombresNivel[nivel] + "] --");
-                            System.out.println("  1. Papelería: $" + String.format("%.2f", tarifasOpc[nivel][0]));
-                            System.out.println("  2. Uniformes: $" + String.format("%.2f", tarifasOpc[nivel][1]));
-                            System.out.println("  0. Volver");
-                            System.out.print("  Opción: ");
-                            int opc = sc.nextInt();
+    while (true) {
+        System.out.println("\n  -- OPCIONALES [" + nombresNivel[nivel] + "] --");
+        System.out.println("  1. Papelería: $" + String.format("%.2f", tarifasOpc[nivel][0]));
+        System.out.println("  2. Uniformes: $" + String.format("%.2f", tarifasOpc[nivel][1]));
+        System.out.println("  0. Volver");
+        System.out.print("  Opción: ");
+        int opc = sc.nextInt();
 
-                            if (opc == 0) break;
+        switch (opc) {
+            case 0:
+                break;
 
-                            if (opc == 1 || opc == 2) {
-                                int opcional_indice = opc - 1;
-                                double monto_opcional = tarifasOpc[nivel][opcional_indice];
-                                String nombre_opcional = nombresOpcionales[opcional_indice];
-                                System.out.printf("  Cobro %s [%s]: $%.2f\n", nombre_opcional, nombresNivel[nivel], monto_opcional);
-                                acumuladosOpc[nivel][opcional_indice] += monto_opcional;
-                            } else {
-                                System.out.println("  >> Opción inválida");
-                            }
-                        }
-                        break;
+            case 1: 
+                double montoPapeleria = tarifasOpc[nivel][0];
+                System.out.printf("  Cobro papelería [%s]: $%.2f\n", nombresNivel[nivel], montoPapeleria);
+                acumuladosOpc[nivel][0] += montoPapeleria;
+                break;
+
+            case 2: 
+                double montoUniformes = tarifasOpc[nivel][1];
+                System.out.printf("  Cobro uniformes [%s]: $%.2f\n", nombresNivel[nivel], montoUniformes);
+                acumuladosOpc[nivel][1] += montoUniformes;
+                break;
+
+            default:
+                System.out.println("  >> Opción inválida");
+        }
+
+        if (opc == 0) break; // Salir del submenú de opcionales
+    }
+    break;
+
 
                     default:
                         System.out.println(">> Opción inválida");
@@ -104,7 +115,7 @@ public class CobrosAnuales {
         System.out.println("\n=== RECIBO GENERAL ===");
         for (int i = 0; i < 3; i++) {
             boolean tieneCobros = acumulados[i][0] > 0 || acumulados[i][1] > 0 || acumuladosOpc[i][0] > 0 || acumuladosOpc[i][1] > 0;
-            if (!tieneCobros) continue;
+            if (!tieneCobros) continue;  // para pasar al siguiente valor de i
 
             System.out.println("Nivel: " + nombresNivel[i]);
 
