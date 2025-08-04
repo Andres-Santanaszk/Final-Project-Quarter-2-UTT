@@ -42,23 +42,23 @@ public class EventosEspeciales {
         System.out.println("5.- Regresar al menu anterior");
 
         int opcion = sc.nextInt();
-        int[][] matriz = DataManager.costoEventos();
+        double[][] matriz = DataManager.costoEventos();
             switch (opcion) {
                 case 1:
                     System.out.println("El costo del Festival de Navidad es de: $ "+ matriz[0][0]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[0][0]);
                     break;
                 case 2:
                     System.out.println("El costo del Dia del niño es de: $ "+ matriz[0][1]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[0][1]);
                     break;
                 case 3:
                     System.out.println("El costo de la Graduación es de: $ "+ matriz[0][2]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[0][2]);
                     break;
                 case 4:
                     System.out.println("El costo del Viaje escolar es de: $ "+ matriz[0][3]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[0][3]);
                     break;
                 case 5:
                     System.out.println("Volviendo al menu anterior...");
@@ -81,23 +81,23 @@ public class EventosEspeciales {
         System.out.println("5.- Regresar al menu anterior");
 
         int opcion = sc.nextInt();
-        int[][] matriz = DataManager.costoEventos();
+        double[][] matriz = DataManager.costoEventos();
             switch (opcion) {
                 case 1:
                     System.out.println("El costo del Festival de navidad es de: $ "+ matriz[1][0]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[1][0]);
                     break;
                 case 2:
                     System.out.println("El costo de los Talleres especiales es de: $ "+ matriz[1][1]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[1][1]);
                     break;
                 case 3:
                     System.out.println("El costo de la Graduación es de: $ "+ matriz[1][2]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[1][2]);
                     break;
                 case 4:
                     System.out.println("El costo de las Fotos Escolares es de: $ "+ matriz[1][3]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[1][3]);
                     break;
                 case 5:
                     System.out.println("Volviendo al menu anterior...");
@@ -120,23 +120,23 @@ public class EventosEspeciales {
         System.out.println("5.- Regresar al menu anterior");
 
         int opcion = sc.nextInt(); 
-        int[][] matriz = DataManager.costoEventos();
+        double[][] matriz = DataManager.costoEventos();
             switch (opcion) {
                 case 1:
                     System.out.println("El costo del Viaje de generación es de: $ "+ matriz[2][0]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[2][0]);
                     break;
                 case 2:
                     System.out.println("El costo de los Talleres / Campamento de verano es de: $ "+ matriz[2][1]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[2][1]);
                     break;
                 case 3:
                     System.out.println("El costo de la Graduación es de: $ "+ matriz[2][2]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[2][2]);
                     break;
                 case 4:
                     System.out.println("El costo de las Fotos escolares es de: $ "+ matriz[2][3]);
-                        ConfirmarPago(sc);
+                        ConfirmarPago(sc, matriz[2][3]);
                     break;
                 case 5:
                     System.out.println("Volviendo al menu anterior...");
@@ -150,17 +150,24 @@ public class EventosEspeciales {
         return;
     }
 
-    public static void ConfirmarPago(Scanner sc){
+    public static void ConfirmarPago(Scanner sc, double deuda_total){
         int respuesta;
+        double saldo_disponible = DataManager.saldos[DataManager.usuarioActual];
             do {
                 System.out.println("¿Desea proceder con el pago?");
                 System.out.println("1.- SI");
                 System.out.println("2.- NO");
                 respuesta = sc.nextInt();
                     if (respuesta == 1){
-                        System.out.println("Pago exitoso.");
+                        double saldo_restante = saldo_disponible - deuda_total;
+                        System.out.println("=== RECIBO GENERAL ===");
+                        System.out.println("\nSu saldo es: " + saldo_disponible);
+                        System.out.println("El total a pagar es de: " + deuda_total);
+                        System.out.println("Saldo restante: " + saldo_restante);
+
+                        DataManager.saldos[DataManager.usuarioActual] = saldo_restante;
                         System.out.println("Regresando al menu...");
-                            EventosEspeciales.main(null);
+                        Main.mostrarMenu();
                     }else if (respuesta == 2){
                         System.out.println("No se pudo realizar el pago");
                             EventosEspeciales.main(null);    

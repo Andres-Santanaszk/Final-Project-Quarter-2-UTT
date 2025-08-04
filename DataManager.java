@@ -11,12 +11,12 @@ public class DataManager {
 
     public static int usuarioActual = -1;
 
-    public static int [][] costoEventos(){
+    public static double [][] costoEventos(){
 
-        int[][] costos = {
-            {300, 250, 1200, 500},
-            {400, 500, 1500, 350},
-            {5000, 2100, 3000, 700}
+        double[][] costos = {
+            {300.43, 250.64, 1200.00, 500.14},
+            {400.34, 500.45, 1500.54, 350.23},
+            {5000.54, 2100.43, 3000.43, 700.23}
         };
         return costos;
     }
