@@ -20,14 +20,38 @@ public class CobrosAnuales {
             {2170, 2170, 1575, 1575}
         };
 
+        String[] nombresPapeleria = {
+            "Cuadernos",
+            "Libro de inglés",
+            "Colores (12 piezas)",
+            "Lápices (paquete de 6)",
+            "Plumas (paquete de 6)",
+            "Borrador",
+            "Sacapuntas metálico",
+            "Regla de 30cm",
+            "Papel bond (paquete)",
+            "Tijeras escolares"
+        };
+
+        double[] preciosPapeleria = {
+            120.00,
+            390.00,
+            80.30,
+            45.40,
+            50.60,
+            10.75,
+            15.40,
+            12.20,
+            180.30,
+            25.30
+        };
+
         String[] nombresNivel = {"Preescolar", "Primaria", "Secundaria"};
-        String[] nombresOpcionales = {"papelería", "uniformes"};
         String[] nombreUniformes = {"Formal masculino", "Formal femenino", 
                                     "Deportivo masuclino", "Deportivo femenino"};
-        String[] itemsPapeleria = {"Libros, "};
         
         double[][] acumulados = new double[3][2];     
-        double[][] acumuladosOpc = new double[3][2];  
+        double[][] acumuladosPap = new double[3][2];  
         double [][] acumuladosUnif = new double[3][4];
 
         double deuda_total = 0;
@@ -75,7 +99,6 @@ public class CobrosAnuales {
                             saldo_disponible -= monto;
                             System.out.println("Cobro inscripción: " + tarifas[nivelEducativo][tipo] + "$");
                         }
-                        
                         break;
                     case 2:
                         tipo = 1;
@@ -99,53 +122,60 @@ public class CobrosAnuales {
                             switch (opc) {
                                 case 0:
                                     break;
-
                                 case 1: 
-                                    // double montoPapeleria = tarifasOpc[nivel][0];
-                                    // System.out.printf("  Cobro papelería [%s]: $%.2f\n", nombresNivel[nivel], montoPapeleria);
-                                    // acumuladosOpc[nivel][0] += montoPapeleria;
-                                    break;
+                                        while (true) {
+                                            System.out.println("\n  -- Papelería --");
+                                            for (int i = 0; i < nombresPapeleria.length; i++) {
+                                                System.out.printf("%d.- %s ($%.2f)\n", (i + 1), nombresPapeleria[i], preciosPapeleria[i]);
+                                            }
+                                            System.out.println("0.- Volver al menú anterior");
+                                            System.out.print(">> ");
+                                            int opcionpap = sc.nextInt();
 
+                                            if (opcionpap == 0) break;
+
+                                            if (opcionpap < 1 || opcionpap > nombresPapeleria.length) {
+                                                System.out.println(">> Opción inválida");
+                                                continue;
+                                            }
+
+                                            int index = opcionpap - 1;
+                                            double montoPap = preciosPapeleria[index];
+
+                                            if (procesarCobro(montoPap, saldo_disponible, nombresPapeleria[index])) {
+                                                acumuladosPap[nivelEducativo][0] += montoPap;  
+                                                saldo_disponible -= montoPap;
+                                                System.out.printf("  Compraste: %s por $%.2f\n", nombresPapeleria[index], montoPap);
+                                            }
+                                        }
+                                        break;
                                 case 2: 
                                     while (true) {
-                                        System.out.println("\n  -- Elija un uniforme -- " + "[" + nombresNivel[nivelEducativo] + "]");
+                                        System.out.println("\n  -- Elija un uniforme --  [" + nombresNivel[nivelEducativo] + "]");
                                         for (int i = 0; i < nombreUniformes.length; i++) {
-                                            System.out.println((i + 1) + ".- " + nombreUniformes[i] + "");
+                                            System.out.printf("%d.- %s ($%.2f)\n", (i + 1), nombreUniformes[i], TarifaUnif[nivelEducativo][i]);
                                         }
                                         System.out.println("0.- para volver al menú anterior");
                                         System.out.print(">> ");
-                                        int opcion2 = sc.nextInt();
-                                        if (opcion2 == 0) break;
+                                        int opcionUnif = sc.nextInt();
 
-                                        switch (opcion2) {
-                                            case 1:
-                                                double montoUniformes = TarifaUnif[nivelEducativo][0];
-                                                System.out.printf("  Cobro uniformes [%s]: $%.2f\n", nombresNivel[nivelEducativo], montoUniformes);
-                                                acumuladosUnif[nivelEducativo][0] += montoUniformes;
-                                                break;
+                                        if (opcionUnif == 0) break;
 
-                                            case 2:
-                                                montoUniformes = TarifaUnif[nivelEducativo][1];
-                                                System.out.printf("  Cobro uniformes [%s]: $%.2f\n", nombresNivel[nivelEducativo], montoUniformes);
-                                                acumuladosUnif[nivelEducativo][1] += montoUniformes;
-                                                break;
+                                        if (opcionUnif < 1 || opcionUnif > nombreUniformes.length) {
+                                            System.out.println(">> Opción inválida");
+                                            continue;
+                                        }
 
-                                            case 3:
-                                                montoUniformes = TarifaUnif[nivelEducativo][2];
-                                                System.out.printf("  Cobro uniformes [%s]: $%.2f\n", nombresNivel[nivelEducativo], montoUniformes);
-                                                acumuladosUnif[nivelEducativo][2] += montoUniformes;
-                                                break;
+                                        int index = opcionUnif - 1;
+                                        double montoUniformes = TarifaUnif[nivelEducativo][index];
 
-                                            case 4:
-                                                montoUniformes = TarifaUnif[nivelEducativo][3];
-                                                System.out.printf("  Cobro uniformes [%s]: $%.2f\n", nombresNivel[nivelEducativo], montoUniformes);
-                                                acumuladosUnif[nivelEducativo][3] += montoUniformes;
-                                         }
-                                        
+                                        if (procesarCobro(montoUniformes, saldo_disponible, nombreUniformes[index])) {
+                                            acumuladosUnif[nivelEducativo][index] += montoUniformes;
+                                            saldo_disponible -= montoUniformes;
+                                            System.out.printf("  Cobraste: %s por $%.2f\n", nombreUniformes[index], montoUniformes);
+                                        }
                                     }
-                                    break;
-                                    
-
+                                break;
                                 default:
                                     System.out.println("  >> Opción inválida");
                             }
@@ -162,7 +192,7 @@ public class CobrosAnuales {
     System.out.println("\n=== RECIBO GENERAL ===");
     for (int i = 0; i < 3; i++) {
         boolean tieneCobros = ChecarCobros(acumulados, i) ||
-                            ChecarCobros(acumuladosOpc, i) ||
+                            ChecarCobros(acumuladosPap, i) ||
                             ChecarCobros(acumuladosUnif, i);
 
         if (!tieneCobros) continue;
@@ -177,9 +207,9 @@ public class CobrosAnuales {
             System.out.printf("  Mantenimiento: $%.2f\n", acumulados[i][1]);
             deuda_total += acumulados[i][1];
         }
-        if (acumuladosOpc[i][0] > 0) {
-            System.out.printf("  Papelería:     $%.2f\n", acumuladosOpc[i][0]);
-            deuda_total += acumuladosOpc[i][0];
+        if (acumuladosPap[i][0] > 0) {
+            System.out.printf("  Papelería:     $%.2f\n", acumuladosPap[i][0]);
+            deuda_total += acumuladosPap[i][0];
         }
         for (int j = 0; j < 4; j++) {
             if (acumuladosUnif[i][j] > 0) {
