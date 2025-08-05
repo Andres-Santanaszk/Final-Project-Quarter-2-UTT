@@ -44,6 +44,7 @@ public class Main {
                 CobrosAnuales.main(null);
                 break;
             case 2:
+                CobroMensualidades.main(null);
                 break;
             case 3:
                 EventosEspeciales.main(null);
