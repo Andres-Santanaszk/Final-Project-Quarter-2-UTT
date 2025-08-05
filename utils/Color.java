@@ -11,7 +11,6 @@ public class Color {
 
     public static final String[] COLORES = {RED, YELLOW, GREEN, CYAN, BLUE, PURPLE};
 
-    /** Imprime un array de líneas ASCII con colores cíclicos */
     public static void mostrarAscii(String[] asciiLines) {
         System.out.println();
         for (int i = 0; i < asciiLines.length; i++) {
@@ -21,12 +20,10 @@ public class Color {
         System.out.println();
     }
 
-    /** Coloriza un texto plano */
     public static String pintar(String color, String texto) {
         return color + texto + RESET;
     }
 
-    /** Imprime texto plano en color */
     public static void println(String color, String texto) {
         System.out.println(pintar(color, texto));
     }
