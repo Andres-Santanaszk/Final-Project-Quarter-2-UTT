@@ -42,7 +42,8 @@ public class Login {
         if (acceso) {
             Color.mostrarAscii(AsciiArt.BIENVENIDA);
         } else {
-            System.out.println(Color.RED + "\nHas excedido el Andnúmero de intentos. Saliendo del sistema." + Color.RESET);
+            System.out.println(Color.RED + "\nHas excedido el número de intentos. Saliendo del sistema." + Color.RESET);
+            main(args);
         }
         
         for (int i = 0; i < usuarios.length; i++) {
