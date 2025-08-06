@@ -12,12 +12,8 @@ public class Main {
 
     public static void mostrarMenu() {
         Scanner sc = new Scanner(System.in);
-        try {
-        Thread.sleep(1000); 
-        } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-        }
         double saldo_disponible = DataManager.saldos[DataManager.usuarioActual];
+        Esperar(1);
         Color.mostrarAscii(AsciiArt.COLEGIO_NOMBRE);
 
         while (true) {
@@ -61,7 +57,7 @@ public class Main {
     }
 
     // funcion que devuelve si es posible completar el pago en base al saldo disponible y el precio del producto
-        public static boolean procesarCobro(double precio, double saldo, String concepto) {
+    public static boolean procesarCobro(double precio, double saldo, String concepto) {
         if (saldo < precio) {
             System.out.println("Lo sentimos, no tienes el saldo suficiente para " + concepto);
             return false;
@@ -69,6 +65,14 @@ public class Main {
         return true;
     }
 
+    // es para esperar determinado tiempo en segundos
+    public static void Esperar(int segundos) {
+        try {
+        Thread.sleep(segundos * 1000); 
+        } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        }
+    }
 
     // funcion que verifica que se introduzca un numero entero, no una letra u otro caracter
         public static int verificarInt(Scanner sc, String mensaje) {

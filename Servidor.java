@@ -10,25 +10,19 @@ public class Servidor {
 
         int puerto = PUERTO_POR_DEFECTO;
 
-        // 1) Propiedad JVM: java -Dport=7000 Servidor
         puerto = parseOrDefault(System.getProperty("port"), puerto);
 
-        // 2) Primer argumento: java Servidor 6000
         if (args.length > 0)
             puerto = parseOrDefault(args[0], puerto);
 
-        // 3) Variable de entorno: SERVIDOR_PORT=8000 java Servidor
         puerto = parseOrDefault(System.getenv(ENV_VAR), puerto);
 
-        // ---- Servidor TCP ----
         try (ServerSocket ss = new ServerSocket(puerto)) {
             System.out.printf("🟢 Servidor escuchando en 0.0.0.0:%d%n", puerto);
 
-            // Mensaje elegante al apagar
             Runtime.getRuntime().addShutdownHook(
                 new Thread(() -> System.out.println("\nApagando servidor…")));
 
-            // Aceptar clientes indefinidamente
             while (true) {
                 Socket s = ss.accept();
                 new Thread(new ManejadorCliente(s)).start();
@@ -39,7 +33,6 @@ public class Servidor {
         }
     }
 
-    /** Intenta convertir a entero, si falla devuelve el valor actual */
     private static int parseOrDefault(String valor, int actual) {
         if (valor == null || valor.isBlank()) return actual;
         try {
@@ -51,7 +44,6 @@ public class Servidor {
     }
 }
 
-/* ---------- Clase para cada cliente conectado ---------- */
 class ManejadorCliente implements Runnable {
 
     private final Socket socket;

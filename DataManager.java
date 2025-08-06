@@ -2,13 +2,15 @@
 public class DataManager {
 
     public static String[][] usuarios = {
-        {"Andres", "*****"},
+        {"Andres", "*****"}, 
         {"Angel", "******"},
         {"Julissa", "*******"},
     };
     
     public static String[][] alumnos = {
-        {"Enrique", "E", }
+        {"Enrique", "Orlando" },
+        {"Enrique", "Orlando" },
+        {"Enrique", "Orlando" }
     };
 
     public static double[] saldos = {9000, 13289.21, 12978.90};

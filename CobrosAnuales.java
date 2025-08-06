@@ -142,7 +142,7 @@ public class CobrosAnuales {
                                             double montoPap = preciosPapeleria[indice];
 
                                             if (Main.procesarCobro(montoPap, saldo_disponible, nombresPapeleria[indice])) {
-                                                acumuladosPap[nivelEducativo][indice] += montoPap;  
+                                                acumuladosPap[nivelEducativo][0] += montoPap;  
                                                 saldo_disponible -= montoPap;
                                                 System.out.printf("  Compraste: %s por $%.2f\n", nombresPapeleria[indice], montoPap);
                                             }
@@ -155,7 +155,6 @@ public class CobrosAnuales {
                                             System.out.printf("%d.- %s ($%.2f)\n", (i + 1), nombreUniformes[i], TarifaUnif[nivelEducativo][i]);
                                         }
                                         System.out.println("0.- para volver al menú anterior");
-                                        System.out.print(">> ");
                                         int opcionUnif = Main.verificarInt(sc, ">> ");
 
                                         if (opcionUnif == 0) break;
