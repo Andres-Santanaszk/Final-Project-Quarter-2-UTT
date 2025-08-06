@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import javax.xml.crypto.Data;
+
 public class CobrosAnuales {
 
     public static void main(String[] args) {
@@ -47,13 +49,13 @@ public class CobrosAnuales {
         };
 
         String[] nombresNivel = {"Preescolar", "Primaria", "Secundaria"};
-        String[] nombreUniformes = {"Formal masculino", "Formal femenino", 
-                                    "Deportivo masuclino", "Deportivo femenino"};
+        String[] nombreUniformes = {"Formal masculino", "Formal femenino", "Deportivo masuclino", "Deportivo femenino"};
         
         double[][] acumulados = new double[3][2];     
         double[][] acumuladosPap = new double[3][2];  
         double [][] acumuladosUnif = new double[3][4];
-
+        
+    
         double deuda_total = 0;
         // esta es la logica para asignar saldo en base a un usuario
         double saldo_disponible = DataManager.saldos[DataManager.usuarioActual];
@@ -94,10 +96,18 @@ public class CobrosAnuales {
                     case 1:
                         int tipo = 0;
                         monto = tarifas[nivelEducativo][tipo];
+
+                        sc.nextLine();
+
+                        System.out.print("Ingrese el nombre del alumno: ");
+                        String nombreAlumno = sc.nextLine();
+
                         if (Main.procesarCobro(monto, saldo_disponible, "Inscripción")){
-                            acumulados[nivelEducativo][tipo] += monto;
-                            saldo_disponible -= monto;
+                            if (registrarAlumno(nivelEducativo, nombreAlumno)) {
+                                acumulados[nivelEducativo][tipo] += monto;
+                                saldo_disponible -= monto;
                             System.out.println("Cobro inscripción: " + tarifas[nivelEducativo][tipo] + "$");
+                            }   
                         }
                         break;
                     case 2:
@@ -226,6 +236,18 @@ public class CobrosAnuales {
         Main.mostrarMenu();
 
     }
+        // funcion para verificar si hay cupo en la escuela (en la matriz)
+        public static boolean registrarAlumno(int nivel, String nombre) {
+            for (int i = 0; i < DataManager.alumnosInscritos[nivel].length; i++) {
+                if (DataManager.alumnosInscritos[nivel][i] == null) {
+                    DataManager.alumnosInscritos[nivel][i] = nombre;
+                    System.out.println("Alumno " + DataManager.alumnosInscritos[nivel][i] + " ha sido inscrito correctamente.");
+                    return true; 
+                }
+            }
+            System.out.println("No hay cupo para más alumnos.");
+            return false;
+}
 
         // es simplemente para saber si hay cobros o no, cuando recorremos todas las matrices/arreglos
         public static boolean checarCobros(double[][] matriz, int fila) {

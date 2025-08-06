@@ -83,7 +83,7 @@ public class Main {
                     valor = sc.nextInt();
                     return valor;
                 } catch (InputMismatchException e) {
-                    System.out.println("  >> Entrada inválida.");
+                    System.out.println(">> Entrada inválida.");
                     sc.nextLine(); // si no hago esto simplemente no funciona
                     // el programa se queda en un bucle infinito, como me ha pasado en ocasiones anteriores
                 }
