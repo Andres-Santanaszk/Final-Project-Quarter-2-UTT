@@ -3,34 +3,33 @@ import java.util.Scanner;
 public class EventosEspeciales {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        
-            System.out.println("=== MENÚ DE EVENTOS ESPECIALES ===");
-            System.out.println("Seleccione el nivel educativo: ");
-            System.out.println("1. Preescolar");
-            System.out.println("2. Primaria");
-            System.out.println("3. Secundaria");
-            System.out.println("4. Salir");
+
+                System.out.println("=== MENÚ DE EVENTOS ESPECIALES ===");
+                System.out.println("Seleccione el nivel educativo: ");
+                System.out.println("1. Preescolar");
+                System.out.println("2. Primaria");
+                System.out.println("3. Secundaria");
+                System.out.println("4. Salir y ver resumen general");
+                
+                int opcion = Main.verificarInt(sc,">> ");
+                    switch (opcion) {
+                        case 1:
+                            PreescolarEvento(sc);
+                            break;
+                        case 2:
+                            PrimariaEvento(sc);
+                            break;
+                        case 3:
+                            SecundariaEvento(sc);
+                            break;
+                        case 4:
+                            System.out.println("Saliendo de eventos especiales...");
+                                Main.mostrarMenu();
+                            break;
+                        default:
+                            System.out.println("Opción inválida. Intenta de nuevo");
+                    }   
             
-            int opcion = sc.nextInt();
-                switch (opcion) {
-                    case 1:
-                        PreescolarEvento(sc);
-                        break;
-                    case 2:
-                        PrimariaEvento(sc);
-                        break;
-                    case 3:
-                        SecundariaEvento(sc);
-                        break;
-                    case 4:
-                        System.out.println("Saliendo de eventos especiales...");
-                            Main.mostrarMenu();
-                        break;
-                    default:
-                        System.out.println("Opción inválida. Intenta de nuevo.");
-                            EventosEspeciales.main(args);
-                        break;
-                }   
     }
 
     public static void PreescolarEvento(Scanner sc){
@@ -41,7 +40,7 @@ public class EventosEspeciales {
         System.out.println("4.- Viaje escolar");
         System.out.println("5.- Regresar al menu anterior");
 
-        int opcion = sc.nextInt();
+        int opcion = Main.verificarInt(sc, ">> ");
         double[][] matriz = DataManager.costoEventos();
             switch (opcion) {
                 case 1:
@@ -80,7 +79,7 @@ public class EventosEspeciales {
         System.out.println("4.- Fotos escolares");
         System.out.println("5.- Regresar al menu anterior");
 
-        int opcion = sc.nextInt();
+        int opcion = Main.verificarInt(sc,">> ");
         double[][] matriz = DataManager.costoEventos();
             switch (opcion) {
                 case 1:
@@ -119,7 +118,7 @@ public class EventosEspeciales {
         System.out.println("4.- Fotos escolares");
         System.out.println("5.- Regresar al menu anterior");
 
-        int opcion = sc.nextInt(); 
+        int opcion = Main.verificarInt(sc, ">> "); 
         double[][] matriz = DataManager.costoEventos();
             switch (opcion) {
                 case 1:
@@ -157,14 +156,14 @@ public class EventosEspeciales {
                 System.out.println("¿Desea proceder con el pago?");
                 System.out.println("1.- SI");
                 System.out.println("2.- NO");
-                respuesta = sc.nextInt();
+                respuesta = Main.verificarInt(sc, ">> ");
                     if (respuesta == 1){
                         double saldo_restante = saldo_disponible - deuda_total;
                         System.out.println("=== RECIBO GENERAL ===");
                         System.out.println("\nSu saldo es: " + saldo_disponible);
                         System.out.println("El total a pagar es de: " + deuda_total);
                         System.out.println("Saldo restante: " + saldo_restante);
-
+                        
                         DataManager.saldos[DataManager.usuarioActual] = saldo_restante;
                         System.out.println("Regresando al menu...");
                         Main.mostrarMenu();
