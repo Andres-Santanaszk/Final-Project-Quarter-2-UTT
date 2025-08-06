@@ -1,15 +1,21 @@
-
+// Clase que simula ser una base de datos con matrices y arrays.
 public class DataManager {
 
     public static String[][] usuarios = {
-        {"Andres", "andres123"},
-        {"Angel", "angel123"},
-        {"Julissa", "julissa123"},
+        {"Andres", "*****"}, 
+        {"Angel", "******"},
+        {"Julissa", "*******"},
     };
     
-    public static double[] saldos = {9504.93, 13289.21, 12978.90};
+    public static String[][] alumnos = {
+        {"Enrique", "Orlando" },
+        {"Enrique", "Orlando" },
+        {"Enrique", "Orlando" }
+    };
 
-    public static int usuarioActual = -1;
+    public static double[] saldos = {9000, 13289.21, 12978.90};
+
+    public static int usuarioActual = 0;
 
     public static double [][] costoEventos(){
 
