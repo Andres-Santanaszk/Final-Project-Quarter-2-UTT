@@ -24,8 +24,6 @@ public class Main {
         System.out.println(Color.RED + "╔════════════════════════════════════════════╗" + Color.RESET);
     System.out.println(Color.RED + "║         Colegio Independencia              ║" + Color.RESET);
     System.out.println(Color.RED + "╠════════════════════════════════════════════╣" + Color.RESET);
-
-    // Opciones (azul)
     System.out.print(Color.BLUE);
     System.out.printf("║  %-2s %-38s ║\n", "1.", "Cobros anuales");
     System.out.printf("║  %-2s %-38s ║\n", "2.", "Pago de mensualidades");
