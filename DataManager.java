@@ -1,10 +1,10 @@
-
+// Clase que simula ser una base de datos con matrices y arrays.
 public class DataManager {
 
     public static String[][] usuarios = {
-        {"Andres", "andres123"},
-        {"Angel", "angel123"},
-        {"Julissa", "julissa123"},
+        {"Andres", "*****"},
+        {"Angel", "******"},
+        {"Julissa", "*******"},
     };
     
     public static String[][] alumnos = {

@@ -53,7 +53,7 @@ public class Login {
     }
     }
 
-        public static boolean validar(String user,String password,String[][] usuarios) {
+        public static boolean validar(String user, String password, String[][] usuarios) {
         for (int i = 0; i < usuarios.length; i++) {
             if (usuarios[i][0].equals(user) && usuarios[i][1].equals(password)) {
                 return true;

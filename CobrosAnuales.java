@@ -4,20 +4,20 @@ public class CobrosAnuales {
 
     public static void main(String[] args) {
 
-        // declaracion
+        // declaracion de variables, matrices, arrays, etc
         Scanner sc = new Scanner(System.in);
 
-        
+            //[Nivel educativo][tipo de cobro]
         double[][] tarifas = {
-            {800, 400},  // kinder
+            {800, 400},  // kinder 
             {1000, 500}, // primaria
             {1200, 600}   // secundaria
         };
 
         double[][] TarifaUnif = {
-            {1600, 1600, 1300, 1300},
-            {1800, 180, 1390,1390},
-            {2170, 2170, 1575, 1575}
+            {1600, 1600, 1300, 1300}, // kinder
+            {1800, 180, 1390,1390}, // primaria
+            {2170, 2170, 1575, 1575} // secundaria
         };
 
         String[] nombresPapeleria = {
@@ -55,20 +55,21 @@ public class CobrosAnuales {
         double [][] acumuladosUnif = new double[3][4];
 
         double deuda_total = 0;
+        // esta es la logica para asignar saldo en base a un usuario
         double saldo_disponible = DataManager.saldos[DataManager.usuarioActual];
         double saldo_inicial = saldo_disponible;
 
         int nivelEducativo = 0;
         double monto = 0;
-
+       
+        // menu principal
         while (true) {
             System.out.println("\nSeleccione el nivel educativo:");
             System.out.println("1. Preescolar");
             System.out.println("2. Primaria");
             System.out.println("3. Secundaria");
             System.out.println("0. Finalizar y ver resumen");
-            System.out.print("Nivel educativo: ");
-            int entrada = sc.nextInt();
+            int entrada = Main.verificarInt(sc, ">> ");
 
             if (entrada == 0) break;
 
@@ -85,8 +86,7 @@ public class CobrosAnuales {
                 System.out.println("2. Cobro mantenimiento");
                 System.out.println("3. Cobro opcionales");
                 System.out.println("0. Cambiar nivel educativo");
-                System.out.print("Opción: ");
-                int opcion = sc.nextInt();
+                int opcion = Main.verificarInt(sc, ">> ");
 
                 if (opcion == 0) break;
 
@@ -94,7 +94,7 @@ public class CobrosAnuales {
                     case 1:
                         int tipo = 0;
                         monto = tarifas[nivelEducativo][tipo];
-                        if (procesarCobro(monto, saldo_disponible, "Inscripción")){
+                        if (Main.procesarCobro(monto, saldo_disponible, "Inscripción")){
                             acumulados[nivelEducativo][tipo] += monto;
                             saldo_disponible -= monto;
                             System.out.println("Cobro inscripción: " + tarifas[nivelEducativo][tipo] + "$");
@@ -103,7 +103,7 @@ public class CobrosAnuales {
                     case 2:
                         tipo = 1;
                         monto = tarifas[nivelEducativo][tipo];
-                        if (procesarCobro(monto, saldo_disponible, "Mantenimiento")){
+                        if (Main.procesarCobro(monto, saldo_disponible, "Mantenimiento")){
                         acumulados[nivelEducativo][tipo] += monto;
                         saldo_disponible -= monto;
                         System.out.println("Cobro mantenimiento: " + nombresNivel[nivelEducativo] + " " + monto + "$");
@@ -116,8 +116,7 @@ public class CobrosAnuales {
                             System.out.println("  1. Papelería:");
                             System.out.println("  2. Uniformes:" );
                             System.out.println("  0. Volver");
-                            System.out.print(">> ");
-                            int opc = sc.nextInt();
+                            int opc = Main.verificarInt(sc, ">> ");
 
                             switch (opc) {
                                 case 0:
@@ -130,7 +129,7 @@ public class CobrosAnuales {
                                             }
                                             System.out.println("0.- Volver al menú anterior");
                                             System.out.print(">> ");
-                                            int opcionpap = sc.nextInt();
+                                            int opcionpap = Main.verificarInt(sc, ">> ");
 
                                             if (opcionpap == 0) break;
 
@@ -139,13 +138,13 @@ public class CobrosAnuales {
                                                 continue;
                                             }
 
-                                            int index = opcionpap - 1;
-                                            double montoPap = preciosPapeleria[index];
+                                            int indice = opcionpap - 1;
+                                            double montoPap = preciosPapeleria[indice];
 
-                                            if (procesarCobro(montoPap, saldo_disponible, nombresPapeleria[index])) {
-                                                acumuladosPap[nivelEducativo][0] += montoPap;  
+                                            if (Main.procesarCobro(montoPap, saldo_disponible, nombresPapeleria[indice])) {
+                                                acumuladosPap[nivelEducativo][indice] += montoPap;  
                                                 saldo_disponible -= montoPap;
-                                                System.out.printf("  Compraste: %s por $%.2f\n", nombresPapeleria[index], montoPap);
+                                                System.out.printf("  Compraste: %s por $%.2f\n", nombresPapeleria[indice], montoPap);
                                             }
                                         }
                                         break;
@@ -157,7 +156,7 @@ public class CobrosAnuales {
                                         }
                                         System.out.println("0.- para volver al menú anterior");
                                         System.out.print(">> ");
-                                        int opcionUnif = sc.nextInt();
+                                        int opcionUnif = Main.verificarInt(sc, ">> ");
 
                                         if (opcionUnif == 0) break;
 
@@ -166,13 +165,13 @@ public class CobrosAnuales {
                                             continue;
                                         }
 
-                                        int index = opcionUnif - 1;
-                                        double montoUniformes = TarifaUnif[nivelEducativo][index];
+                                        int indice = opcionUnif - 1;
+                                        double montoUniformes = TarifaUnif[nivelEducativo][indice];
 
-                                        if (procesarCobro(montoUniformes, saldo_disponible, nombreUniformes[index])) {
-                                            acumuladosUnif[nivelEducativo][index] += montoUniformes;
+                                        if (Main.procesarCobro(montoUniformes, saldo_disponible, nombreUniformes[indice])) {
+                                            acumuladosUnif[nivelEducativo][indice] += montoUniformes;
                                             saldo_disponible -= montoUniformes;
-                                            System.out.printf("  Cobraste: %s por $%.2f\n", nombreUniformes[index], montoUniformes);
+                                            System.out.printf("  Cobraste: %s por $%.2f\n", nombreUniformes[indice], montoUniformes);
                                         }
                                     }
                                 break;
@@ -190,10 +189,10 @@ public class CobrosAnuales {
             }
         }
     System.out.println("\n=== RECIBO GENERAL ===");
-    for (int i = 0; i < 3; i++) {
-        boolean tieneCobros = ChecarCobros(acumulados, i) ||
-                            ChecarCobros(acumuladosPap, i) ||
-                            ChecarCobros(acumuladosUnif, i);
+    for (int i = 0; i < 3; i++) {  //revisa por cada nivel educativo
+        boolean tieneCobros = checarCobros(acumulados, i) ||
+                            checarCobros(acumuladosPap, i) ||
+                            checarCobros(acumuladosUnif, i);
 
         if (!tieneCobros) continue;
 
@@ -211,7 +210,7 @@ public class CobrosAnuales {
             System.out.printf("  Papelería:     $%.2f\n", acumuladosPap[i][0]);
             deuda_total += acumuladosPap[i][0];
         }
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < nombreUniformes.length; j++) {
             if (acumuladosUnif[i][j] > 0) {
                 System.out.printf("  Uniformes:     $%.2f\n", acumuladosUnif[i][j]);
                 deuda_total += acumuladosUnif[i][j];
@@ -219,25 +218,18 @@ public class CobrosAnuales {
         }
     }
 
-    System.out.printf("Saldo inicial:    $%.2f\n", saldo_inicial);
-    System.out.printf("Total a pagar:    $%.2f\n", deuda_total);
-    System.out.printf("Saldo restante:   $%.2f\n", saldo_disponible);
+        System.out.printf("Saldo inicial:    $%.2f\n", saldo_inicial);
+        System.out.printf("Total a pagar:    $%.2f\n", deuda_total);
+        System.out.printf("Saldo restante:   $%.2f\n", saldo_disponible);
 
-    // ya actualizado:
-    DataManager.saldos[DataManager.usuarioActual] = saldo_disponible;
+        
+        DataManager.saldos[DataManager.usuarioActual] = saldo_disponible;
         Main.mostrarMenu();
 
     }
 
-        public static boolean procesarCobro(double precio, double saldo, String concepto) {
-        if (saldo < precio) {
-            System.out.println("Lo sentimos, no tienes el saldo suficiente para " + concepto);
-            return false;
-        }
-        return true;
-    }
-
-        public static boolean ChecarCobros(double[][] matriz, int fila) {
+        // es simplemente para saber si hay cobros o no, cuando recorremos todas las matrices/arreglos
+        public static boolean checarCobros(double[][] matriz, int fila) {
             for (int j = 0; j < matriz[fila].length; j++) {
                 if (matriz[fila][j] > 0) {
                     return true;
