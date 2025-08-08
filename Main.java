@@ -75,20 +75,35 @@ public class Main {
         }
     }
 
+    public static boolean confirmarPago(Scanner sc) {
+    while (true) {
+        System.out.print("¿Desea proceder con el pago? (si/no): ");
+        String respuesta = sc.nextLine().trim().toLowerCase();
+
+        if (respuesta.equals("si")) return true;
+        
+        else if (respuesta.equals("no")) return false;
+        
+        else{
+            System.out.println(">> Respuesta inválida, intenta de nuevo. Escribe 'si' o 'no'");
+        }
+    }
+}
+
     // funcion que verifica que se introduzca un numero entero, no una letra u otro caracter
-        public static int verificarInt(Scanner sc, String mensaje) {
-            int valor;
-            while (true) {
-                System.out.print(mensaje);
+    public static int verificarInt(Scanner sc, String mensaje) {
+        int valor;
+        while (true) {
+            System.out.print(mensaje);
                 try {
-                    valor = sc.nextInt();
-                    return valor;
-                } catch (InputMismatchException e) {
-                    System.out.println(">> Entrada inválida.");
-                    sc.nextLine(); // si no hago esto simplemente no funciona
-                    // el programa se queda en un bucle infinito, como me ha pasado en ocasiones anteriores
-                }
+                valor = sc.nextInt();
+                return valor;
+            } catch (InputMismatchException e) {
+                System.out.println(">> Respuesta inválida, intenta de nuevo.");
+                sc.nextLine(); // si no hago esto simplemente no funciona
+                // el programa se queda en un bucle infinito, como me ha pasado en ocasiones anteriores
             }
         }
+    }
 
 }
