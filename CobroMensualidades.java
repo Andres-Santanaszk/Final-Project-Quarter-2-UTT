@@ -71,14 +71,14 @@ public class CobroMensualidades {
                 } else {
                     costo = costosBase[nivel];
                 }
-
-                if (Main.procesarCobro(costo, saldo_disponible, "Mensualidad " + nombresMeses[mes])) {
-                    acumulados[nivel][mes] += costo;
-                    pagado[nivel][mes] = true;
-                    saldo_disponible -= costo;
-                    System.out.printf("Pagaste %s por $%.2f\n", nombresMeses[mes], costo);
-                }
-            }
+                if (Main.confirmarPago(sc)){
+                    if (Main.procesarCobro(costo, saldo_disponible, "Mensualidad " + nombresMeses[mes])) {
+                        acumulados[nivel][mes] += costo;
+                        pagado[nivel][mes] = true;
+                        saldo_disponible -= costo;
+                        System.out.printf("Pagaste %s por $%.2f\n", nombresMeses[mes], costo);
+                    }
+            }   }
         }
 
         // RESUMEN FINAL

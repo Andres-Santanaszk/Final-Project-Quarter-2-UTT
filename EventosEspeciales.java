@@ -68,12 +68,13 @@ public class EventosEspeciales {
 
                 double costo = costos[nivel][evento];
                 String nombreEvento = nombresEventos[nivel][evento];
-
-                if (Main.procesarCobro(costo, saldo_disponible, "Evento: " + nombreEvento)) {
-                    acumulados[nivel][evento] += costo;
-                    pagado[nivel][evento] = true;
-                    saldo_disponible -= costo;
-                    System.out.printf("Pagaste '%s' por $%.2f\n", nombreEvento, costo);
+                if (Main.confirmarPago(sc)) {
+                    if (Main.procesarCobro(costo, saldo_disponible, "Evento: " + nombreEvento)) {
+                        acumulados[nivel][evento] += costo;
+                        pagado[nivel][evento] = true;
+                        saldo_disponible -= costo;
+                        System.out.printf("Pagaste '%s' por $%.2f\n", nombreEvento, costo);
+                    }
                 }
             }
         }

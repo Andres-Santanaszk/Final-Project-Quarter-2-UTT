@@ -81,11 +81,13 @@ public class Main {
         System.out.print("¿Desea proceder con el pago? (si/no): ");
         String respuesta = sc.nextLine().trim().toLowerCase();
 
-        if (respuesta.equals("si")) return true;
+        if (respuesta.equals("si")) {
+            return true;
         
-        else if (respuesta.equals("no")) return false;
+        }else if (respuesta.equals("no")) {
+            return false;
         
-        else{
+        }else{
             System.out.println(">> Respuesta inválida, intenta de nuevo. Escribe 'si' o 'no'");
         }
     }
@@ -98,6 +100,7 @@ public class Main {
             System.out.print(mensaje);
                 try {
                 valor = sc.nextInt();
+                sc.nextLine();
                 return valor;
             } catch (InputMismatchException e) {
                 System.out.println(">> Respuesta inválida, intenta de nuevo.");
