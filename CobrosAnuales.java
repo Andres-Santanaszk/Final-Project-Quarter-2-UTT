@@ -50,9 +50,9 @@ public class CobrosAnuales {
 
         String[] nombresNivel = {"preescolar", "primaria", "secundaria"};
         String[] nombreUniformes = {"Formal masculino", "Formal femenino", "Deportivo masuclino", "Deportivo femenino"};
-        String[] nombresMain = {"Inscripción", "Mantenimiento"};
+        String[] nombresOpciones = {"Inscripción", "Mantenimiento"};
         double[][] acumulados = new double[3][2];     
-        double[][] acumuladosPap = new double[3][2];  
+        double[][] acumuladosPap = new double[3][1];  
         double [][] acumuladosUnif = new double[3][4];
         
     
@@ -103,12 +103,12 @@ public class CobrosAnuales {
                         String nombreAlumno = sc.nextLine();
 
                         if (Main.confirmarPago(sc)) {
-                            if (Main.procesarCobro(monto, saldo_disponible, "Inscripción")) {
-                                if (registrarAlumno(nivelEducativo, nombreAlumno)) {
+                            if (registrarAlumno(nivelEducativo, nombreAlumno)) {
+                                if (Main.procesarCobro(monto, saldo_disponible, "Inscripción")) {
                                     acumulados[nivelEducativo][tipo] += monto;
                                     saldo_disponible -= monto;
-                                System.out.println("Cobro inscripción: " + tarifas[nivelEducativo][tipo] + "$");
-                                }   
+                                    System.out.println("Cobro inscripción: " + monto + "$");
+                                }
                             }
                         }
                         break;
@@ -151,7 +151,6 @@ public class CobrosAnuales {
                             System.out.println("- Reparaciones menores");
                             System.out.printf("Monto total a pagar: $%.2f\n", monto);
 
-                            // OJO: limpiar buffer si vienes de nextInt()
                             sc.nextLine();
 
                             if (Main.confirmarPago(sc)) {
@@ -259,7 +258,7 @@ public class CobrosAnuales {
             
             for (int j = 0; j < acumulados[i].length; j++) {
                 if (acumulados[i][j] > 0) {
-                    System.out.printf("  %-14s $%.2f\n", nombresMain[j] + ":", acumulados[i][j]);
+                    System.out.printf("  %-14s $%.2f\n", nombresOpciones[j] + ":", acumulados[i][j]);
                     deuda_total += acumulados[i][j];
                 }
             }
