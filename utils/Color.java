@@ -1,21 +1,20 @@
 package utils;
 
 public class Color {
-    public static final String RESET  = "\u001B[0m";
-    public static final String RED    = "\u001B[31m";
-    public static final String GREEN  = "\u001B[32m";
-    public static final String YELLOW = "\u001B[33m";
-    public static final String BLUE   = "\u001B[34m";
-    public static final String PURPLE = "\u001B[35m";
-    public static final String CYAN   = "\u001B[36m";
+    public static String RESET  = "\u001B[0m";
+    public static String RED    = "\u001B[31m";
+    public static String GREEN  = "\u001B[32m";
+    public static String YELLOW = "\u001B[33m";
+    public static String BLUE   = "\u001B[34m";
+    public static String PURPLE = "\u001B[35m";
+    public static String CYAN   = "\u001B[36m";
 
-    public static final String[] COLORES = {RED, YELLOW, GREEN, CYAN, BLUE, PURPLE};
+    public static String[] COLORES = {RED, YELLOW, GREEN, CYAN, BLUE, PURPLE};
 
     public static void mostrarAscii(String[] asciiLines) {
         System.out.println();
         for (int i = 0; i < asciiLines.length; i++) {
-            String color = COLORES[i % COLORES.length];
-            System.out.println(color + asciiLines[i] + RESET);
+            System.out.println(CYAN + asciiLines[i] + RESET);
         }
         System.out.println();
     }
