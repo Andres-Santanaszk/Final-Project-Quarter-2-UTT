@@ -21,13 +21,14 @@ public class EventosEspeciales {
         double saldo_inicial = saldo_disponible;
 
         while (true) {
-            System.out.println("\n=== MENÚ DE EVENTOS ESPECIALES ===");
-            System.out.println("Seleccione el nivel educativo:");
-            System.out.println("1. Preescolar");
-            System.out.println("2. Primaria");
-            System.out.println("3. Secundaria");
-            System.out.println("0. Finalizar y ver resumen");
-            int entrada = Main.verificarInt(sc, ">> ");
+            String[] nivelesEducativos = {
+                    "Preescolar",
+                    "Primaria",
+                    "Secundaria",
+                    "Finalizar y ver resumen"
+                };
+
+    int entrada = Main.menuVentana(sc, "Menú de eventos especiales", nivelesEducativos);
 
             if (entrada == 0) break;
 
@@ -61,45 +62,44 @@ public class EventosEspeciales {
             System.out.println("Alumno seleccionado: " + nombreIngresado);
 
             while (true) {
-                System.out.println("\n=== EVENTOS [" + nombresNivel[nivel] + "] ===");
-                for (int i = 0; i < 4; i++) {
-                    String estado;
-                        if (pagado[nivel][i]) {
-                            estado = "(Pagado)";
-                        } else {
-                            estado = "";
-                        }
-                    System.out.printf("%d. %s %s\n", i + 1, nombresEventos[nivel][i], estado +"       " + costos[nivel][i]);
-                }
-                System.out.println("0. Cambiar nivel educativo");
-                int opcion = Main.verificarInt(sc, ">> ");
+                String tituloEventos = "Elija un evento: " + nombresNivel[nivel];
+                String[] opcionesEventos = {
+                    String.format("%s ($%.2f)", nombresEventos[nivel][0], costos[nivel][0]),
+                    String.format("%s ($%.2f)", nombresEventos[nivel][1], costos[nivel][1]),
+                    String.format("%s ($%.2f)", nombresEventos[nivel][2], costos[nivel][2]),
+                    String.format("%s ($%.2f)", nombresEventos[nivel][3], costos[nivel][3]),
+                    "Volver al menú anterior"
+                };
 
-                if (opcion == 0) break;
+                int opcionEvento = Main.menuVentana(sc, tituloEventos, opcionesEventos);
 
-                if (opcion < 1 || opcion > 4) {
+                if (opcionEvento == 5) break; // volver al menú anterior
+
+                if (opcionEvento < 1 || opcionEvento > nombresEventos[nivel].length) {
                     System.out.println(">> Opción inválida");
                     continue;
                 }
 
-                int evento = opcion - 1;
+                int indice = opcionEvento - 1;
 
-                if (pagado[nivel][evento]) {
+                // Lógica basada en matriz booleana, sin mostrar "(Pagado)" en el menú
+                if (pagado[nivel][indice]) {
                     System.out.println("Este evento ya fue pagado.");
                     continue;
                 }
 
-                double costo = costos[nivel][evento];
-                String nombreEvento = nombresEventos[nivel][evento];
+                double montoEvento = costos[nivel][indice];
+                String nombreEvento = nombresEventos[nivel][indice];
+
                 if (Main.confirmarPago(sc)) {
-                    if (Main.procesarCobro(costo, saldo_disponible, "Evento: " + nombreEvento)) {
-                        acumulados[nivel][evento] += costo;
-                        pagado[nivel][evento] = true;
-                        saldo_disponible -= costo;
-                        System.out.printf("Pagaste '%s' por $%.2f\n", nombreEvento, costo);
+                    if (Main.procesarCobro(montoEvento, saldo_disponible, nombreEvento)) {
+                        acumulados[nivel][indice] += montoEvento;
+                        pagado[nivel][indice] = true;     // se marca en la matriz booleana
+                        saldo_disponible -= montoEvento;  // se descuenta el saldo local (si procede)
+                        System.out.printf("Has pagado: %s por $%.2f\n", nombreEvento, montoEvento);
                     }
                 }
             }
-        }
 
         // RESUMEN FINAL
         System.out.println("\n=== RECIBO GENERAL DE EVENTOS ===");
@@ -123,5 +123,6 @@ public class EventosEspeciales {
 
         DataManager.saldos[DataManager.usuarioActual] = saldo_disponible;
         Main.mostrarMenu();
+        }
     }
 }

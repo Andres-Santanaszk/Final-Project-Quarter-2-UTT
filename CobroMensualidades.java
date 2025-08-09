@@ -12,10 +12,10 @@ public class CobroMensualidades {
             "Septiembre", "Octubre", "Noviembre", "Diciembre"
         };
 
-        // Costos base por nivel
+        // costos base por nivel
         double[] costosBase = {2500.0, 2700.0, 3000.0};
 
-        // Matriz de acumulados [nivel][mes]
+        // matriz de acumulados [nivel][mes]
         double[][] acumulados = new double[3][11]; 
         boolean[][] pagado = new boolean[3][11];
 
@@ -24,14 +24,16 @@ public class CobroMensualidades {
         double saldo_inicial = saldo_disponible;
 
         while (true) {
-            System.out.println("\nSeleccione el nivel educativo:");
-            System.out.println("1. Preescolar");
-            System.out.println("2. Primaria");
-            System.out.println("3. Secundaria");
-            System.out.println("0. Finalizar y ver resumen");
-            int entrada = Main.verificarInt(sc, ">> ");
+            String[] nivelesEducativos = {
+                "Preescolar",
+                "Primaria",
+                "Secundaria",
+                "Finalizar y ver resumen"
+            };
 
-            if (entrada == 0) break;
+            int entrada = Main.menuVentana(sc, "Seleccione el nivel educativo", nivelesEducativos);
+
+            if (entrada == 4) break;
 
                 if (entrada < 1 || entrada > 3) {
             System.out.println("Nivel educativo inválido");

@@ -94,12 +94,11 @@ public class Main {
             System.out.print(mensaje);
                 try {
                 valor = sc.nextInt();
-                sc.nextLine();
-                sc.nextLine();
+                sc.nextLine();// si no hago esto simplemente no funciona
                 return valor;
             } catch (InputMismatchException e) {
                 System.out.println(">> Respuesta inválida, intenta de nuevo.");
-                sc.nextLine(); // si no hago esto simplemente no funciona
+                sc.nextLine(); 
                 // el programa se queda en un bucle infinito, como me ha pasado en ocasiones anteriores
             }
         }
