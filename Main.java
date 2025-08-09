@@ -124,10 +124,8 @@ public class Main {
             System.out.println(Color.BLUE + " ║" + Color.RESET); // borde derecho
         }
         
-        // Borde inferior azul
         System.out.println(Color.BLUE + "╚══════════════════════════════════════════════════════════════╝" + Color.RESET);
         
-        // Leer opción
         return verificarInt(sc, ">> ");
     }
 
