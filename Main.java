@@ -94,7 +94,7 @@ public class Main {
             System.out.print(mensaje);
                 try {
                 valor = sc.nextInt();
-                sc.nextLine();// si no hago esto simplemente no funciona
+                sc.nextLine(); // si no hago esto simplemente no funciona
                 return valor;
             } catch (InputMismatchException e) {
                 System.out.println(">> Respuesta inválida, intenta de nuevo.");
@@ -104,20 +104,17 @@ public class Main {
         }
     }
 
-    // funcion para convertir a menu
+    // funcion para convertir arrays a menus
     public static int menuVentana(Scanner sc, String titulo, String[] opciones) {
-    // Línea superior (rojo)
         System.out.println(Color.RED + "╔══════════════════════════════════════════════════════════════╗" + Color.RESET);
         
-        // Título con borde rojo y texto blanco
         System.out.print(Color.RED + "║" + Color.RESET);
         System.out.printf("%-62s", String.format("%" + ((62 + titulo.length()) / 2) + "s", titulo));
         System.out.println(Color.RED + "║" + Color.RESET);
         
-        // Separador azul
         System.out.println(Color.RED + "╠══════════════════════════════════════════════════════════════╣" + Color.RESET);
         
-        // Opciones en blanco con bordes rojos
+        
         for (int i = 0; i < opciones.length; i++) {
             System.out.print(Color.BLUE + "║  " + Color.RESET); // borde izquierdo
             System.out.printf("%-2s %-56s", (i + 1) + ".", opciones[i]); // texto en blanco
