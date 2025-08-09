@@ -8,11 +8,7 @@ public class Login {
     public static void main(String[] args) {
         
         Color.mostrarAscii(AsciiArt.LOGIN);
-        try {
-        Thread.sleep(1000); 
-        } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-        }
+        Main.Esperar(1);
 
         String[][] usuarios = DataManager.usuarios;
         Scanner sc = new Scanner(System.in);
@@ -50,10 +46,9 @@ public class Login {
             if (usuarios[i][0].equals(usuarioNombre)) {
             DataManager.usuarioActual = i;
             break;
+            }
         }
     }
-    }
-
         public static boolean validar(String user, String password, String[][] usuarios) {
         for (int i = 0; i < usuarios.length; i++) {
             if (usuarios[i][0].equals(user) && usuarios[i][1].equals(password)) {

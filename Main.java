@@ -18,21 +18,17 @@ public class Main {
         Esperar(1);
 
         while (true) {
-            System.out.println(Color.RED + "╔════════════════════════════════════════════╗" + Color.RESET);
-            System.out.println(Color.RED + "║         Colegio Independencia              ║" + Color.RESET);
-            System.out.println(Color.RED + "╠════════════════════════════════════════════╣" + Color.RESET);
-            System.out.print(Color.BLUE);
-            System.out.printf("║  %-2s %-38s ║\n", "1.", "Cobros anuales");
-            System.out.printf("║  %-2s %-38s ║\n", "2.", "Pago de mensualidades");
-            System.out.printf("║  %-2s %-38s ║\n", "3.", "Eventos especiales");
-            System.out.printf("║  %-2s %-38s ║\n", "4.", "Consulta de saldo");
-            System.out.printf("║  %-2s %-38s ║\n", "5.", "Cambiar de usuario");
-            System.out.printf("║  %-2s %-38s ║\n", "6.", "Salir del programa");
-            System.out.print(Color.RESET); 
-            System.out.println(Color.RED + "╚════════════════════════════════════════════╝" + Color.RESET);
-            int opcion = verificarInt(sc, ">> ");
+            String[] opciones = {
+                "Cobros anuales (inscripciones, mantenimiento)",
+                "Pago de mensualidades",
+                "Eventos especiales",
+                "Consulta de saldo",
+                "Cambiar de usuario",
+                "Salir del programa"
+            };
 
-    
+            int opcion = menuVentana(sc, "Menú principal", opciones);
+
         switch (opcion) {
             case 1:
                 CobrosAnuales.main(null);
@@ -77,19 +73,19 @@ public class Main {
     }
 
     public static boolean confirmarPago(Scanner sc) {
-    while (true) {
-        System.out.print("¿Desea proceder con el pago? (si/no): ");
-        String respuesta = sc.nextLine().trim().toLowerCase();
+        while (true) {
+            System.out.print("¿Desea proceder con el pago? (si/no): ");
+            String respuesta = sc.nextLine().trim().toLowerCase();
 
-        if (respuesta.equals("si")) return true;
-        
-        else if (respuesta.equals("no")) return false;
-        
-        else{
-            System.out.println(">> Respuesta inválida, intenta de nuevo. Escribe 'si' o 'no'");
+            if (respuesta.equals("si")) return true;
+            
+            else if (respuesta.equals("no")) return false;
+            
+            else{
+                System.out.println(">> Respuesta inválida, intenta de nuevo. Escribe 'si' o 'no'");
+            }
         }
     }
-}
 
     // funcion que verifica que se introduzca un numero entero, no una letra u otro caracter
     public static int verificarInt(Scanner sc, String mensaje) {
@@ -98,6 +94,7 @@ public class Main {
             System.out.print(mensaje);
                 try {
                 valor = sc.nextInt();
+                sc.nextLine();
                 return valor;
             } catch (InputMismatchException e) {
                 System.out.println(">> Respuesta inválida, intenta de nuevo.");
@@ -105,6 +102,33 @@ public class Main {
                 // el programa se queda en un bucle infinito, como me ha pasado en ocasiones anteriores
             }
         }
+    }
+
+    // funcion para convertir a menu
+    public static int menuVentana(Scanner sc, String titulo, String[] opciones) {
+    // Línea superior (rojo)
+        System.out.println(Color.RED + "╔══════════════════════════════════════════════════════════════╗" + Color.RESET);
+        
+        // Título con borde rojo y texto blanco
+        System.out.print(Color.RED + "║" + Color.RESET);
+        System.out.printf("%-62s", String.format("%" + ((62 + titulo.length()) / 2) + "s", titulo));
+        System.out.println(Color.RED + "║" + Color.RESET);
+        
+        // Separador azul
+        System.out.println(Color.RED + "╠══════════════════════════════════════════════════════════════╣" + Color.RESET);
+        
+        // Opciones en blanco con bordes rojos
+        for (int i = 0; i < opciones.length; i++) {
+            System.out.print(Color.BLUE + "║  " + Color.RESET); // borde izquierdo
+            System.out.printf("%-2s %-56s", (i + 1) + ".", opciones[i]); // texto en blanco
+            System.out.println(Color.BLUE + " ║" + Color.RESET); // borde derecho
+        }
+        
+        // Borde inferior azul
+        System.out.println(Color.BLUE + "╚══════════════════════════════════════════════════════════════╝" + Color.RESET);
+        
+        // Leer opción
+        return verificarInt(sc, ">> ");
     }
 
 }

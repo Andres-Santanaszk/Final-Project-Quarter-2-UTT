@@ -2,18 +2,18 @@
 public class DataManager {
 
     public static String[][] usuarios = {
-        {"Andres", "*****"}, 
+        {"Andres", "*****"}, // las contraseñas son el numero de asteriscos
         {"Angel", "******"},
         {"Julissa", "*******"},
     };
 
     public static String[][] alumnosInscritos = {
-        {"Luis", "Ana", "Mario", "Claudia", "Diego", null, null, null, null, null}, // kinder   
-        {"Karen", "Hugo", "Teresa", "Rafael", "Patricia", null, null, null, null, null}, // primaria 
-        {"Carlos", "Valeria", "José", "Camila", "Esteban", null, null, null, null, null} // secundaria
+        {"luis", "ana", "mario", "claudia", "diego", null, null, null, null, null}, // kinder   
+        {"karen", "hugo", "teresa", "humberto", "patricia", null, null, null, null, null}, // primaria 
+        {"carlos", "valeria", "jose", "camila", "esteban", null, null, null, null, null} // secundaria
     };
 
-    public static double[] saldos = {9000, 13289.21, 12978.90}; // saldos asignados por indice con respecto a [i][0] en usuarios
+    public static double[] saldos = {20000, 20000, 20000}; // saldos asignados por indice con respecto a [i][0] en usuarios
 
     public static int usuarioActual = 0;
 

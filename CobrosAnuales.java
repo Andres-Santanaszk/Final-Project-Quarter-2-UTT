@@ -5,15 +5,14 @@ import utils.Color;
 public class CobrosAnuales {
 
     public static void main(String[] args) {
-
         // declaracion de variables, matrices, arrays, etc
         Scanner sc = new Scanner(System.in);
 
             //[Nivel educativo][tipo de cobro]
         double[][] tarifas = {
-            {800, 400},  // kinder 
-            {1000, 500}, // primaria
-            {1200, 600}   // secundaria
+            {2800, 400},  // kinder 
+            {3000, 500}, // primaria
+            {4200, 600}   // secundaria
         };
 
         double[][] TarifaUnif = {
@@ -26,8 +25,6 @@ public class CobrosAnuales {
             "Cuadernos",
             "Libro de inglés",
             "Colores (12 piezas)",
-            "Lápices (paquete de 6)",
-            "Plumas (paquete de 6)",
             "Borrador",
             "Sacapuntas metálico",
             "Regla de 30cm",
@@ -39,8 +36,6 @@ public class CobrosAnuales {
             120.00,
             390.00,
             80.30,
-            45.40,
-            50.60,
             10.75,
             15.40,
             12.20,
@@ -51,10 +46,11 @@ public class CobrosAnuales {
         String[] nombresNivel = {"preescolar", "primaria", "secundaria"};
         String[] nombreUniformes = {"Formal masculino", "Formal femenino", "Deportivo masuclino", "Deportivo femenino"};
         String[] nombresOpciones = {"Inscripción", "Mantenimiento"};
+
         double[][] acumulados = new double[3][2];     
         double[][] acumuladosPap = new double[3][1];  
         double [][] acumuladosUnif = new double[3][4];
-        
+        boolean[] mantPagado = new boolean[3];
     
         double deuda_total = 0;
         //parte de la logica para asignar saldo en base a un usuario
@@ -66,154 +62,169 @@ public class CobrosAnuales {
        
         // menu principal
         while (true) {
-            System.out.println("\nSeleccione el nivel educativo:");
-            System.out.println("1. Preescolar");
-            System.out.println("2. Primaria");
-            System.out.println("3. Secundaria");
-            System.out.println("0. Finalizar y ver resumen");
-            int entrada = Main.verificarInt(sc, ">> ");
+            String[] nivelesEducativos = {
+                "Preescolar",
+                "Primaria",
+                "Secundaria",
+                "Finalizar y ver resumen"
+            };
 
-            if (entrada == 0) break;
+            int entrada = Main.menuVentana(sc, "Seleccione el nivel educativo", nivelesEducativos);
 
-            if (entrada < 1 || entrada > 3) {
+            if (entrada == 4) break;
+
+            if (entrada < 1 || entrada > 4) {
                 System.out.println(">> Nivel educativo inválido");
                 continue;
             }
 
-            nivelEducativo = entrada - 1;
+            nivelEducativo = entrada - 1; // nos indica la fila de la matriz tarifas
 
             while (true) {
-                System.out.println("\n=== MENÚ COBROS ANUALES [" + nombresNivel[nivelEducativo] + "] ===");
-                System.out.println("1. Cobro inscripción");
-                System.out.println("2. Cobro mantenimiento");
-                System.out.println("3. Cobro opcionales");
-                System.out.println("0. Cambiar nivel educativo");
-                int opcion = Main.verificarInt(sc, ">> ");
+                String[] opcionesCobrosAnuales = {
+                    "Cobro inscripción",
+                    "Cobro mantenimiento",
+                    "Cobro opcionales",
+                    "Cambiar nivel educativo" 
+                };
 
-                if (opcion == 0) break;
+                int opcion = Main.menuVentana(sc, "Menú de cobros anuales: " + nombresNivel[nivelEducativo], opcionesCobrosAnuales);
 
+                if (opcion == 4) break;
+                
                 switch (opcion) {
                     case 1:
                         int tipo = 0; // nos indica la columna de la matriz tarifas
                         monto = tarifas[nivelEducativo][tipo];
 
-                        sc.nextLine();
                         System.out.println(Color.RED + "El alumno será inscrito en el nivel educativo " + nombresNivel[nivelEducativo] + ", el precio es de: " + tarifas[nivelEducativo][tipo] + "$" + Color.RESET);
                         System.out.print("Ingrese el nombre del alumno: ");
-                        String nombreAlumno = sc.nextLine();
+                        String nombreAlumno = sc.nextLine().toLowerCase();
 
-                        if (Main.confirmarPago(sc)) {
-                            if (registrarAlumno(nivelEducativo, nombreAlumno)) {
-                                if (Main.procesarCobro(monto, saldo_disponible, "Inscripción")) {
-                                    acumulados[nivelEducativo][tipo] += monto;
-                                    saldo_disponible -= monto;
-                                    System.out.println("Cobro inscripción: " + monto + "$");
-                                }
-                            }
+                        if (!Main.confirmarPago(sc)) break;
+                        
+                        int indiceAlumno = registrarAlumno(nivelEducativo, nombreAlumno);
+                        if (indiceAlumno == -1) break;
+                        
+                        if (Main.procesarCobro(monto, saldo_disponible, "Inscripción")) {
+                            acumulados[nivelEducativo][tipo] += monto;
+                            saldo_disponible -= monto;
+                            System.out.println("Cobro inscripción: " + monto + "$");
+                            System.out.println("El alumno ha sido inscrito correctamente.");
+                        }
+                        else {
+                            DataManager.alumnosInscritos[nivelEducativo][indiceAlumno] = null; 
+                            // aqui lo desinscribimos si procesarCobro es false
                         }
                         break;
                     case 2:
+                        if (mantPagado[nivelEducativo]) {
+                                System.out.println();
+                                System.out.println("Usted ya ha pagado el mantenimiento en el nivel educativo: " + nombresNivel[nivelEducativo] + ".");
+                                break;
+                            }
                         tipo = 1;
-                        System.out.println("\n>> Pago de mantenimiento");
-                        System.out.println("1. Mensual ($" + tarifas[nivelEducativo][tipo] + ")");
-                        System.out.println("2. Trimestral (10% de descuento)");
-                        System.out.println("3. Anual (20% de descuento)");
+                        monto = tarifas[nivelEducativo][tipo];
 
-                        int opcMantenimiento = Main.verificarInt(sc, "Seleccione el tipo de pago: ");
+                        System.out.println(Color.RED + "╔══════════════════════════════════════════════════════════════╗" + Color.RESET);
+                        System.out.print(Color.RED + "║" + Color.RESET);
+                        System.out.printf("%-62s", String.format("%" + ((62 + "Cobro de Mantenimiento".length()) / 2) + "s", "Cobro de Mantenimiento"));
+                        System.out.println(Color.RED + "║" + Color.RESET);
+                        System.out.println(Color.RED + "╠══════════════════════════════════════════════════════════════╣" + Color.RESET);
+                        System.out.print(Color.BLUE + "║  " + Color.RESET);
+                        System.out.printf("%-59s", "El mantenimiento es un cobro anual, contribuye a:");
+                        System.out.println(Color.BLUE + " ║" + Color.RESET);
+                        System.out.print(Color.BLUE + "║  " + Color.RESET);
+                        System.out.printf("%-59s", "- Limpieza y sanitización");
+                        System.out.println(Color.BLUE + " ║" + Color.RESET);
+                        System.out.print(Color.BLUE + "║  " + Color.RESET);
+                        System.out.printf("%-59s", "- Reparaciones menores");
+                        System.out.println(Color.BLUE + " ║" + Color.RESET);
+                        System.out.print(Color.BLUE + "║  " + Color.RESET);
+                        System.out.printf("%-59s", "- Mantenimiento de áreas verdes");
+                        System.out.println(Color.BLUE + " ║" + Color.RESET);
+                        System.out.print(Color.BLUE + "║  " + Color.RESET);
+                        System.out.printf("%-59s", "- Reparación y reposición de mobiliario");
+                        System.out.println(Color.BLUE + " ║" + Color.RESET);
+                        System.out.print(Color.BLUE + "║  " + Color.RESET);
+                        System.out.printf("%-59s", "- Mantenimiento de equipos");
+                        System.out.println(Color.BLUE + " ║" + Color.RESET);
+                        System.out.print(Color.BLUE + "║  " + Color.RESET);
+                        System.out.printf("%-59s", String.format("El monto total anual a pagar es de $%.2f", monto));
+                        System.out.println(Color.BLUE + " ║" + Color.RESET);
+                        System.out.println(Color.BLUE + "╚══════════════════════════════════════════════════════════════╝" + Color.RESET);
 
-                        int meses = 0;
-                        double descuento = 1.0;
-
-                        switch (opcMantenimiento) {
-                            case 1: // mensual
-                                meses = 1;
-                                break;
-                            case 2: // trimestral
-                                meses = 3;
-                                descuento = 0.90;
-                                break;
-                            case 3: // anual
-                                meses = 10; // tomando en cuenta que solamente se cobran 10 meses
-                                descuento = 0.80;
-                                break;
-                            default:
-                                System.out.println(">> Opción inválida");
-                                break;
-                        }
-
-                        if (meses > 0) {
-                            double montoBaseMensual = tarifas[nivelEducativo][tipo];
-                            monto = montoBaseMensual * meses * descuento;
-
-                            System.out.println("\nEl cobro incluye:");
-                            System.out.println("- Servicios básicos (agua, luz)");
-                            System.out.println("- Limpieza y sanitización");
-                            System.out.println("- Reparaciones menores");
-                            System.out.printf("Monto total a pagar: $%.2f\n", monto);
-
-                            sc.nextLine();
-
-                            if (Main.confirmarPago(sc)) {
-                                if (Main.procesarCobro(monto, saldo_disponible, "Mantenimiento")) {
-                                    acumulados[nivelEducativo][tipo] += monto;
-                                    saldo_disponible -= monto;
-                                    System.out.printf("Pago de mantenimiento registrado: %s por $%.2f\n", nombresNivel[nivelEducativo], monto);           
+                        if (Main.confirmarPago(sc)) {
+                            if (Main.procesarCobro(monto, saldo_disponible, "Mantenimiento")) {
+                                acumulados[nivelEducativo][tipo] += monto;
+                                saldo_disponible -= monto;
+                                mantPagado[nivelEducativo] = true;
+                                System.out.printf("Pago de mantenimiento registrado a nivel educativo %s por $%.2f\n", nombresNivel[nivelEducativo], monto);           
                                 }
-                            }    
-                        }
+                            }
                         break;
 
                     case 3:
                         while (true) {
-                            System.out.println("\n  -- OPCIONALES [" + nombresNivel[nivelEducativo] + "] --");
-                            System.out.println("  1. Papelería:");
-                            System.out.println("  2. Uniformes:" );
-                            System.out.println("  0. Volver");
-                            int opc = Main.verificarInt(sc, ">> ");
+                            String tituloOpcionales = "Opcionales - " + nombresNivel[nivelEducativo];
+                            String[] opcionesOpcionales = {
+                                "Papelería",
+                                "Uniformes",
+                                "Volver"
+                            };
+
+                            int opc = Main.menuVentana(sc, tituloOpcionales, opcionesOpcionales);
+                            if (opc == 3) break;
 
                             switch (opc) {
-                                case 0:
-                                    break;
                                 case 1: 
-                                        while (true) {
-                                            System.out.println("\n  -- Papelería --");
-                                            for (int i = 0; i < nombresPapeleria.length; i++) {
-                                                System.out.printf("%d.- %s ($%.2f)\n", (i + 1), nombresPapeleria[i], preciosPapeleria[i]);
-                                            }
-                                            System.out.println("0.- Volver al menú anterior");
-                                            int opcionpap = Main.verificarInt(sc, ">> ");
+                                    while (true) {
+                                        String titulo = "Papelería";
+                                        String[] opcionesPap = {
+                                            String.format("%s ($%.2f)", nombresPapeleria[0], preciosPapeleria[0]),
+                                            String.format("%s ($%.2f)", nombresPapeleria[1], preciosPapeleria[1]),
+                                            String.format("%s ($%.2f)", nombresPapeleria[2], preciosPapeleria[2]),
+                                            String.format("%s ($%.2f)", nombresPapeleria[3], preciosPapeleria[3]),
+                                            String.format("%s ($%.2f)", nombresPapeleria[4], preciosPapeleria[4]),
+                                            String.format("%s ($%.2f)", nombresPapeleria[5], preciosPapeleria[5]),
+                                            String.format("%s ($%.2f)", nombresPapeleria[6], preciosPapeleria[6]),
+                                            String.format("%s ($%.2f)", nombresPapeleria[7], preciosPapeleria[7]),
+                                            "Volver al menú anterior"
+                                        };
+                                        int opcionpap = Main.menuVentana(sc, titulo, opcionesPap);
 
-                                            if (opcionpap == 0) break;
+                                        if (opcionpap == 9) break;
 
-                                            if (opcionpap < 1 || opcionpap > nombresPapeleria.length) {
-                                                System.out.println(">> Opción inválida");
-                                                continue;
-                                            }
+                                        if (opcionpap < 1 || opcionpap > nombresPapeleria.length) {
+                                            System.out.println(">> Opción inválida");
+                                            continue;
+                                        }
 
-                                            int indice = opcionpap - 1;
-                                            double montoPap = preciosPapeleria[indice];
+                                        int indice = opcionpap - 1;
+                                        double montoPap = preciosPapeleria[indice];
 
-                                            sc.nextLine();
-                                            
-                                            if (Main.confirmarPago(sc)) {
-                                                if (Main.procesarCobro(montoPap, saldo_disponible, nombresPapeleria[indice])) {
-                                                    acumuladosPap[nivelEducativo][0] += montoPap;  
-                                                    saldo_disponible -= montoPap;
-                                                    System.out.printf("  Compraste: %s por $%.2f\n", nombresPapeleria[indice], montoPap);
-                                                }
+                                        if (Main.confirmarPago(sc)) {
+                                            if (Main.procesarCobro(montoPap, saldo_disponible, nombresPapeleria[indice])) {
+                                                acumuladosPap[nivelEducativo][0] += montoPap;  
+                                                saldo_disponible -= montoPap;
+                                                System.out.printf("  Compraste: %s por $%.2f\n", nombresPapeleria[indice], montoPap);
                                             }
                                         }
-                                        break;
+                                    }
+                                    break;
                                 case 2: 
                                     while (true) {
-                                        System.out.println("\n  -- Elija un uniforme --  [" + nombresNivel[nivelEducativo] + "]");
-                                        for (int i = 0; i < nombreUniformes.length; i++) {
-                                            System.out.printf("%d.- %s ($%.2f)\n", (i + 1), nombreUniformes[i], TarifaUnif[nivelEducativo][i]);
-                                        }
-                                        System.out.println("0.- para volver al menú anterior");
-                                        int opcionUnif = Main.verificarInt(sc, ">> ");
+                                        String titulo = "Elija un uniforme: " + nombresNivel[nivelEducativo];
+                                        String[] opcionesUni = {
+                                            String.format("%s ($%.2f)", nombreUniformes[0], TarifaUnif[nivelEducativo][0]),
+                                            String.format("%s ($%.2f)", nombreUniformes[1], TarifaUnif[nivelEducativo][1]),
+                                            String.format("%s ($%.2f)", nombreUniformes[2], TarifaUnif[nivelEducativo][2]),
+                                            String.format("%s ($%.2f)", nombreUniformes[3], TarifaUnif[nivelEducativo][3]),
+                                            "Volver al menú anterior"
+                                        };
+                                        int opcionUnif = Main.menuVentana(sc, titulo, opcionesUni);
 
-                                        if (opcionUnif == 0) break;
+                                        if (opcionUnif == 5) break;
 
                                         if (opcionUnif < 1 || opcionUnif > nombreUniformes.length) {
                                             System.out.println(">> Opción inválida");
@@ -223,8 +234,6 @@ public class CobrosAnuales {
                                         int indice = opcionUnif - 1;
                                         double montoUniformes = TarifaUnif[nivelEducativo][indice];
 
-                                        sc.nextLine();
-
                                         if (Main.confirmarPago(sc)){
                                             if (Main.procesarCobro(montoUniformes, saldo_disponible, nombreUniformes[indice])) {
                                                 acumuladosUnif[nivelEducativo][indice] += montoUniformes;
@@ -232,8 +241,8 @@ public class CobrosAnuales {
                                                 System.out.printf("Has comprado: %s por $%.2f\n", nombreUniformes[indice], montoUniformes);
                                             }
                                         }    
-                                    }   
-                                break;
+                                    }
+                                        break;
                                 default:
                                     System.out.println(">> Opción inválida");
                             }
@@ -270,7 +279,7 @@ public class CobrosAnuales {
 
             for (int j = 0; j < acumuladosUnif[i].length; j++) {
                 if (acumuladosUnif[i][j] > 0) {
-                    System.out.printf("  %-14s $%.2f\n", "Uniformes:", acumuladosUnif[i][j]);
+                    System.out.printf("  %-14s $%.2f\n", nombreUniformes[j] + ":", acumuladosUnif[i][j]);
                     deuda_total += acumuladosUnif[i][j];
                 }
             }
@@ -288,17 +297,16 @@ public class CobrosAnuales {
 
     }
         // funcion para verificar si hay cupo en la escuela (en la matriz)
-        public static boolean registrarAlumno(int nivel, String nombre) {
+        public static int registrarAlumno(int nivel, String nombre) {
             for (int i = 0; i < DataManager.alumnosInscritos[nivel].length; i++) {
                 if (DataManager.alumnosInscritos[nivel][i] == null) {
                     DataManager.alumnosInscritos[nivel][i] = nombre;
-                    System.out.println("Alumno " + DataManager.alumnosInscritos[nivel][i] + " ha sido inscrito correctamente.");
-                    return true; 
+                    return i; // índice de donde quedo el alumno en la matriz
                 }
             }
             System.out.println("No hay cupo para más alumnos.");
-            return false;
-}
+            return -1;
+        }
 
         // es simplemente para saber si hay cobros o no, cuando recorremos todas las matrices/arreglos
         public static boolean checarCobros(double[][] matriz, int fila) {
