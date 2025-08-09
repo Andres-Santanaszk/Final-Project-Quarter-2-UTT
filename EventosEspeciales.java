@@ -38,6 +38,28 @@ public class EventosEspeciales {
 
             int nivel = entrada - 1;
 
+                        // Solicitar nombre del alumno
+            System.out.print("Ingresa el nombre del alumno al que desea pagar algun evento: ");
+            String nombreIngresado = sc.nextLine().trim();
+
+            boolean inscrito = false;
+
+            // Recorremos manualmente el arreglo para buscar el nombre, cuidando los null
+            for (int i = 0; i < DataManager.alumnosInscritos[nivel].length; i++) {
+                String alumno = DataManager.alumnosInscritos[nivel][i];
+                if (alumno != null && alumno.equalsIgnoreCase(nombreIngresado)) {
+                    inscrito = true;
+                    break;
+                }
+            }
+
+            if (!inscrito) {
+                System.out.println("Alumno no inscrito. Por favor, inscríbelo primero.");
+                continue;  // Vuelve a pedir nivel educativo
+            }
+
+            System.out.println("Alumno seleccionado: " + nombreIngresado);
+
             while (true) {
                 System.out.println("\n=== EVENTOS [" + nombresNivel[nivel] + "] ===");
                 for (int i = 0; i < 4; i++) {
@@ -47,7 +69,7 @@ public class EventosEspeciales {
                         } else {
                             estado = "";
                         }
-                    System.out.printf("%d. %s %s\n", i + 1, nombresEventos[nivel][i], estado);
+                    System.out.printf("%d. %s %s\n", i + 1, nombresEventos[nivel][i], estado +"       " + costos[nivel][i]);
                 }
                 System.out.println("0. Cambiar nivel educativo");
                 int opcion = Main.verificarInt(sc, ">> ");
