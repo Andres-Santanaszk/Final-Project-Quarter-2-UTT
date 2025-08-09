@@ -95,6 +95,7 @@ public class Main {
                 try {
                 valor = sc.nextInt();
                 sc.nextLine();
+                sc.nextLine();
                 return valor;
             } catch (InputMismatchException e) {
                 System.out.println(">> Respuesta inválida, intenta de nuevo.");

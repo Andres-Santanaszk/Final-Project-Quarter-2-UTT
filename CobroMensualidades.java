@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CobroMensualidades {
@@ -32,24 +33,41 @@ public class CobroMensualidades {
 
             if (entrada == 0) break;
 
-            if (entrada < 1 || entrada > 3) {
-                System.out.println(">> Nivel educativo inválido");
-                continue;
+                if (entrada < 1 || entrada > 3) {
+            System.out.println("Nivel educativo inválido");
+            continue;
             }
 
             int nivel = entrada - 1;
 
+                    System.out.print("Ingresa el nombre del alumno al que deseas pagar la mensualidad: ");
+            String nombreIngresado = sc.nextLine().trim();
+
+            boolean inscrito = Arrays.asList(DataManager.alumnosInscritos[nivel]).contains(nombreIngresado);
+
+            if (!inscrito) {
+                System.out.println("Alumno no esta inscrito. Por favor, inscríbelo primero.");
+                continue; // vuelve a pedir nivel
+            }
+
+            System.out.println("Alumno seleccionado: " + nombreIngresado);
+
             while (true) {
                 System.out.println("\n=== MENÚ MENSUALIDADES [" + nombresNivel[nivel] + "] ===");
                 for (int i = 1; i <= 10; i++) {
+                        double mensualdoble = costosBase[nivel];
+                    if (nombresMeses[i].equals("Marzo") || nombresMeses[i].equals( "Diciembre")){
+                        mensualdoble *= 2;
+                    }
                     String textoAdicional;
                         if (pagado[nivel][i]) {
                             textoAdicional = "(Pagado)";
                         } else {
                             textoAdicional = "";
                         }
-                        System.out.printf("%d. %s %s\n", i, nombresMeses[i], textoAdicional);
+                        System.out.printf("%d. %s %s\n", i, nombresMeses[i] +"                " +mensualdoble , textoAdicional);
                 }
+            
                 System.out.println("0. Cambiar nivel educativo");
                 int mes = Main.verificarInt(sc, ">> ");
 
@@ -71,14 +89,14 @@ public class CobroMensualidades {
                 } else {
                     costo = costosBase[nivel];
                 }
-
-                if (Main.procesarCobro(costo, saldo_disponible, "Mensualidad " + nombresMeses[mes])) {
-                    acumulados[nivel][mes] += costo;
-                    pagado[nivel][mes] = true;
-                    saldo_disponible -= costo;
-                    System.out.printf("Pagaste %s por $%.2f\n", nombresMeses[mes], costo);
-                }
-            }
+                if (Main.confirmarPago(sc)){
+                    if (Main.procesarCobro(costo, saldo_disponible, "Mensualidad " + nombresMeses[mes])) {
+                        acumulados[nivel][mes] += costo;
+                        pagado[nivel][mes] = true;
+                        saldo_disponible -= costo;
+                        System.out.printf("Pagaste %s por $%.2f\n", nombresMeses[mes], costo);
+                    }
+            }   }
         }
 
         // RESUMEN FINAL
