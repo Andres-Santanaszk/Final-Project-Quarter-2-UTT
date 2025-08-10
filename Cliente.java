@@ -1,71 +1,69 @@
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class Cliente {
 
-    private static final String DEFAULT_HOST = "127.0.0.1";
-    private static final int DEFAULT_PORT = 5000;
-    private static final String ENV_VAR_HOST = "CLIENTE_HOST";
-    private static final String ENV_VAR_PORT = "CLIENTE_PORT";
+    private static final String ENV_HOST = "SERVIDOR_HOST";
+    private static final String ENV_PORT = "SERVIDOR_PORT";
 
     public static void main(String[] args) {
-        String host = resolveHost(args);
-        int port = resolvePort(args);
 
-        boolean ok = false;
+        String host = System.getProperty("host", "");
+        int    port = parseOrDefault(System.getProperty("port"), 0);
 
-        // 1) Conectar y autenticar rápido
-        try (Socket socket = new Socket(host, port)) {
-            socket.setSoTimeout(15000);
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-                 PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true)) {
+        if (args.length >= 1) host = args[0];
+        if (args.length >= 2) port = parseOrDefault(args[1], port);
 
-                String ready = in.readLine(); // debe ser "READY"
-                if (!"READY".equals(ready)) {
-                    System.err.println("❌ Servidor no respondió READY: " + ready);
-                } else {
-                    // Como la verificación real está en Main/Login, mandamos credenciales genéricas
-                    out.println("LOGIN demo demo");
-                    String resp = in.readLine(); // "OK" o "ERR ..."
-                    if ("OK".equals(resp)) {
-                        ok = true;
-                        System.out.println("✅ Conexión y handshake con servidor exitoso");
-                    } else {
-                        System.err.println("❌ Handshake fallido: " + resp);
-                    }
-                }
+        if (host.isBlank())
+            host = System.getenv().getOrDefault(ENV_HOST, "localhost");
+        if (port == 0)
+            port = parseOrDefault(System.getenv(ENV_PORT), 5000);
+
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese la IP del servidor al que desea conectarse: ");
+        String inHost = sc.nextLine().trim();
+        if (!inHost.isEmpty()) host = inHost;
+
+        System.out.print("Ingrese el puerto: ");
+        String inPort = sc.nextLine().trim();
+        if (!inPort.isEmpty())
+            port = parseOrDefault(inPort, port);
+
+        System.out.printf("Conectando a %s:%d…%n", host, port);
+
+        try (Socket socket = new Socket(host, port);
+             BufferedReader in  = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+             PrintWriter    out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true)) {
+
+            // Handshake tolerante: si llega READY, respondemos; si no, seguimos con lo recibido
+            String first = in.readLine(); // puede ser "READY" o ya "OK"/"ERR"
+            String rsp;
+
+            if ("READY".equals(first)) {
+                // Enviamos un LOGIN genérico, ya que el login real lo hace tu Main/Login.java
+                out.println("LOGIN demo demo");
+                rsp = in.readLine(); // debería ser "OK"
+            } else {
+                // Servidor que no manda READY: tomamos la primera respuesta como válida
+                rsp = first;
             }
-        } catch (SocketTimeoutException te) {
-            System.err.println("⌛ Timeout esperando respuesta del servidor: " + te.getMessage());
-        } catch (IOException e) {
-            System.err.println("❌ Error de conexión: " + e.getMessage());
+
+            if ("OK".equals(rsp)) {
+                System.out.println("\n✅ Handshake correcto con el servidor\n");
+                // Ejecuta tu flujo real (Main -> Login.java -> mostrarMenu)
+                Main.main(new String[0]); // o Main.main(null);
+                // Notificamos salida limpia (opcional)
+                try { out.println("EXIT"); } catch (Exception ignore) {}
+            } else {
+                System.err.println("❌ Handshake fallido: " + rsp);
+            }
+
+        } catch (IOException ex) {
+            System.err.println("No se pudo conectar: " + ex.getMessage());
+        } finally {
+            try { sc.close(); } catch (Exception ignore) {}
         }
-
-        // 2) Si autenticó, ejecutar tu Main (que hace login real)
-        if (ok) {
-            Main.main(null);
-        } else {
-            System.err.println("Saliendo...");
-        }
-    }
-
-    private static String resolveHost(String[] args) {
-        String host = DEFAULT_HOST;
-        String sysProp = System.getProperty("host");
-        if (sysProp != null && !sysProp.isBlank()) host = sysProp.trim();
-        if (args != null && args.length >= 1 && !args[0].isBlank()) host = args[0].trim();
-        String env = System.getenv(ENV_VAR_HOST);
-        if (env != null && !env.isBlank()) host = env.trim();
-        return host;
-    }
-
-    private static int resolvePort(String[] args) {
-        int port = DEFAULT_PORT;
-        port = parseOrDefault(System.getProperty("port"), port);
-        if (args != null && args.length >= 2) port = parseOrDefault(args[1], port);
-        String env = System.getenv(ENV_VAR_PORT);
-        port = parseOrDefault(env, port);
-        return port;
     }
 
     private static int parseOrDefault(String val, int def) {
