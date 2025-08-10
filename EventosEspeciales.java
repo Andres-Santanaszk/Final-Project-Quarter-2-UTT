@@ -71,7 +71,6 @@ public class EventosEspeciales {
                     String.format("%s ($%.2f)", nombresEventos[nivel][2], costos[nivel][2]),
                     String.format("%s ($%.2f)", nombresEventos[nivel][3], costos[nivel][3]),
                     "Volver al menú anterior"
-                    "Volver al menú anterior"
                 };
 
                 int opcionEvento = Main.menuVentana(sc, tituloEventos, opcionesEventos);
