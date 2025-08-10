@@ -8,14 +8,14 @@ public class Login {
     public static void main(String[] args) {
         
         Color.mostrarAscii(AsciiArt.LOGIN);
-        Main.Esperar(1);
+        Main.Esperar(1); 
 
         String[][] usuarios = DataManager.usuarios;
         Scanner sc = new Scanner(System.in);
         int intentos = 0;
         boolean acceso = false;
         String usuarioNombre = "";
-
+        // mientras los intentos sean menor a 3 y que el acceso sea false, te permita poder intentar de nuevo
         while (intentos < 3 && !acceso) {
             System.out.println();
             System.out.print(Color.BLUE + "Usuario: " + Color.RESET);
@@ -41,14 +41,14 @@ public class Login {
             System.out.println(Color.RED + "\nHas excedido el número de intentos. Saliendo del sistema." + Color.RESET);
             main(args);
         }
-        
+            // Aqui es para darle al usuario el saldo correspodiente 
         for (int i = 0; i < usuarios.length; i++) {
             if (usuarios[i][0].equals(usuarioNombre)) {
             DataManager.usuarioActual = i;
             break;
             }
         }
-    }
+    }           //Aqui es para checar que el usuario y la contraseña coincidan
         public static boolean validar(String user, String password, String[][] usuarios) {
         for (int i = 0; i < usuarios.length; i++) {
             if (usuarios[i][0].equals(user) && usuarios[i][1].equals(password)) {

@@ -19,8 +19,8 @@ public class DataManager {
 
     public static double [][] costoEventos(){
 
-        double[][] costos = {
-            {300.43, 250.64, 1200.00, 500.14},
+        double[][] costos = {                 //tarifas de los eventos por nivel educativos
+            {300.43, 250.64, 1200.00, 500.14},    
             {400.34, 500.45, 1500.54, 350.23},
             {5000.54, 2100.43, 3000.43, 700.23}
         };
