@@ -13,13 +13,13 @@ public class DataManager {
         {"carlos", "valeria", "jose", "camila", "esteban", null, null, null, null, null} // secundaria
     };
 
-    public static double[] saldos = {20000, 20000, 20000}; // saldos asignados por indice con respecto a [i][0] en usuarios
+    public static double[] saldos = {20000, 20000, 20000}; // saldos asignados por indice
 
-    public static int usuarioActual = 0;
+    public static int usuarioActual = -1;
 
     public static double [][] costoEventos(){
 
-        double[][] costos = {                 //tarifas de los eventos por nivel educativos
+        double[][] costos = {//tarifas de los eventos por nivel educativos
             {300.43, 250.64, 1200.00, 500.14},    
             {400.34, 500.45, 1500.54, 350.23},
             {5000.54, 2100.43, 3000.43, 700.23}

@@ -16,9 +16,9 @@ public class CobrosAnuales {
         };
 
         double[][] TarifaUnif = {
-            {1600, 1600, 1300, 1300}, // kinder
-            {1800, 1800, 1390,1390}, // primaria
-            {2170, 2170, 1575, 1575} // secundaria
+            {1600, 1600, 1300, 1300}, 
+            {1800, 1800, 1390,1390}, 
+            {2170, 2170, 1575, 1575} 
         };
 
         String[] nombresPapeleria = {
@@ -301,7 +301,7 @@ public class CobrosAnuales {
             for (int i = 0; i < DataManager.alumnosInscritos[nivel].length; i++) {
                 if (DataManager.alumnosInscritos[nivel][i] == null) {
                     DataManager.alumnosInscritos[nivel][i] = nombre;
-                    return i; // índice de donde quedo el alumno en la matriz
+                    return i; 
                 }
             }
             System.out.println("No hay cupo para más alumnos.");
