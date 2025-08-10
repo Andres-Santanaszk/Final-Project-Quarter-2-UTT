@@ -59,7 +59,6 @@ class ManejadorCliente implements Runnable {
              PrintWriter    out = new PrintWriter(
                  new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)) {
 
-            // Handshake simple: avisamos que estamos listos
             out.println("READY");
 
             String linea;
@@ -72,20 +71,10 @@ class ManejadorCliente implements Runnable {
 
                 switch (op) {
                     case "LOGIN":
-                        // Aceptamos cualquier LOGIN sin validar credenciales
+
                         out.println("OK");
                         System.out.printf("🔓 [%s] LOGIN aceptado%n", remoto);
-                        // No cerramos aún para permitir "EXIT" opcional desde el cliente
-                        break;
 
-                    case "TOTAL":
-                        if (p.length > 1) {
-                            generarRecibo(p[1]);
-                            out.println("RECIBO_GENERADO");
-                            System.out.printf("📄 [%s] Recibo generado con total: %s%n", remoto, p[1]);
-                        } else {
-                            out.println("ERROR_TOTAL_INVALIDO");
-                        }
                         break;
 
                     case "EXIT":
@@ -94,24 +83,12 @@ class ManejadorCliente implements Runnable {
                         return;
 
                     default:
-                        // Para esta conexión simple, ignoramos otros comandos
                         out.println("COMANDO_DESCONOCIDO");
                         System.out.printf("⚠️  [%s] comando no soportado: %s%n", remoto, cmd);
                 }
             }
         } catch (IOException ex) {
             System.err.printf("❌ Cliente %s desconectado: %s%n", remoto, ex.getMessage());
-        }
-    }
-
-    private void generarRecibo(String total) {
-        try (PrintWriter writer = new PrintWriter("recibo.txt", StandardCharsets.UTF_8)) {
-            writer.println("--- RECIBO ---");
-            writer.println("Gracias por su preferencia.");
-            writer.println("Total gastado: $" + total);
-            writer.println("----------------");
-        } catch (IOException e) {
-            System.err.println("⚠️  Error al generar el recibo: " + e.getMessage());
         }
     }
 }

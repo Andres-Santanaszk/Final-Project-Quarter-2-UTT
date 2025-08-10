@@ -36,41 +36,23 @@ public class Cliente {
              BufferedReader in  = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
              PrintWriter    out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true)) {
 
-            // Handshake tolerante: si llega READY, respondemos; si no, seguimos con lo recibido
-            String first = in.readLine(); // puede ser "READY" o ya "OK"/"ERR"
+            String first = in.readLine(); 
             String rsp;
 
             if ("READY".equals(first)) {
-                // Enviamos un LOGIN genérico, ya que el login real lo hace tu Main/Login.java
+
                 out.println("LOGIN demo demo");
-                rsp = in.readLine(); // debería ser "OK"
+                rsp = in.readLine();
             } else {
-                // Servidor que no manda READY: tomamos la primera respuesta como válida
+
                 rsp = first;
             }
 
             if ("OK".equals(rsp)) {
-                System.out.println("\n✅ ¡Conexión exitosa!\n");
-                // Ejecuta tu flujo real (Main -> Login.java -> mostrarMenu)
-                // Capturamos el saldo ANTES de que el usuario haga operaciones
-                double saldoInicial = DataManager.saldos[DataManager.usuarioActual];
+                System.out.println("\n✅ Handshake correcto con el servidor\n");
 
-                Main.main(new String[0]); // El usuario realiza todas sus operaciones aquí
+                Main.main(new String[0]);
 
-                // Capturamos el saldo DESPUÉS de las operaciones
-                double saldoFinal = DataManager.saldos[DataManager.usuarioActual];
-                double totalGastado = saldoInicial - saldoFinal;
-
-                // Enviamos el total real para generar el recibo
-                out.println("TOTAL " + String.format("%.2f", totalGastado));
-                String reciboRsp = in.readLine();
-                if ("RECIBO_GENERADO".equals(reciboRsp)) {
-                    System.out.println("🧾 Recibo generado en el servidor.");
-                } else {
-                    System.err.println("⚠️  No se pudo generar el recibo: " + reciboRsp);
-                }
-
-                // Notificamos salida limpia (opcional)
                 try { out.println("EXIT"); } catch (Exception ignore) {}
             } else {
                 System.err.println("❌ Handshake fallido: " + rsp);
