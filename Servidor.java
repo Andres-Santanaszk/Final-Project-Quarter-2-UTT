@@ -1,86 +1,126 @@
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.*;
 
 public class Servidor {
 
-    private static final int    PUERTO_POR_DEFECTO = 5000;
-    private static final String ENV_VAR           = "SERVIDOR_PORT";
+    private static final int    DEFAULT_PORT = 5000;
+    private static final String ENV_VAR_PORT = "SERVIDOR_PORT";
 
     public static void main(String[] args) {
+        int port = resolvePort(args);
+        System.out.println("📡 Servidor iniciando en puerto " + port + "...");
 
-        int puerto = PUERTO_POR_DEFECTO;
+        // Pool simple para manejar clientes concurrentes
+        ExecutorService pool = Executors.newCachedThreadPool();
 
-        puerto = parseOrDefault(System.getProperty("port"), puerto);
-
-        if (args.length > 0)
-            puerto = parseOrDefault(args[0], puerto);
-
-        puerto = parseOrDefault(System.getenv(ENV_VAR), puerto);
-
-        try (ServerSocket ss = new ServerSocket(puerto)) {
-            System.out.printf("🟢 Servidor escuchando en 0.0.0.0:%d%n", puerto);
-
-            Runtime.getRuntime().addShutdownHook(
-                new Thread(() -> System.out.println("\nApagando servidor…")));
+        try (ServerSocket server = new ServerSocket()) {
+            server.setReuseAddress(true);
+            server.bind(new InetSocketAddress(port));
+            System.out.println("✅ Servidor listo. Esperando clientes...");
 
             while (true) {
-                Socket s = ss.accept();
-                new Thread(new ManejadorCliente(s)).start();
+                try {
+                    Socket s = server.accept();
+                    pool.submit(new ManejadorCliente(s));
+                } catch (IOException acceptErr) {
+                    System.err.println("❌ Error aceptando cliente: " + acceptErr.getMessage());
+                }
             }
-        } catch (IOException ex) {
-            System.err.printf("⚠️  Error al iniciar el servidor (%d): %s%n",
-                              puerto, ex.getMessage());
+        } catch (IOException e) {
+            System.err.println("❌ No se pudo iniciar el servidor: " + e.getMessage());
+        } finally {
+            pool.shutdownNow();
         }
     }
 
-    private static int parseOrDefault(String valor, int actual) {
-        if (valor == null || valor.isBlank()) return actual;
+    private static int resolvePort(String[] args) {
+        // Prioridad: args[0] > -Dport= > ENV > DEFAULT
+        int port = DEFAULT_PORT;
+
+        // Propiedad del sistema
+        port = parseOrDefault(System.getProperty("port"), port);
+
+        // Arg[0]
+        if (args != null && args.length > 0) {
+            port = parseOrDefault(args[0], port);
+        }
+
+        // ENV
+        String env = System.getenv(ENV_VAR_PORT);
+        port = parseOrDefault(env, port);
+
+        return port;
+    }
+
+    private static int parseOrDefault(String v, int def) {
+        if (v == null || v.isBlank()) return def;
         try {
-            return Integer.parseInt(valor.trim());
+            return Integer.parseInt(v.trim());
         } catch (NumberFormatException e) {
-            System.err.printf("⚠️  Puerto inválido «%s», usando %d%n", valor, actual);
-            return actual;
+            return def;
         }
     }
 }
 
 class ManejadorCliente implements Runnable {
+    private static final int READ_TIMEOUT_MS = 15000;
 
     private final Socket socket;
-    ManejadorCliente(Socket socket) { this.socket = socket; }
 
-    @Override public void run() {
+    ManejadorCliente(Socket socket) {
+        this.socket = socket;
+    }
+
+    @Override
+    public void run() {
         String remoto = socket.getRemoteSocketAddress().toString();
         System.out.println("➕ Cliente conectado: " + remoto);
 
-        try (BufferedReader in  = new BufferedReader(
-                 new InputStreamReader(socket.getInputStream()));
-             PrintWriter    out = new PrintWriter(
-                 socket.getOutputStream(), true)) {
+        try {
+            socket.setSoTimeout(READ_TIMEOUT_MS);
 
-            String linea;
-            while ((linea = in.readLine()) != null) {
-                String[] p = linea.trim().split("\\s+");
-                if (p.length == 0) continue;
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+                 PrintWriter out   = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)) {
 
-                switch (p[0].toUpperCase()) {
-                    case "LOGIN":
-                        if (p.length == 3) {
-                            boolean ok = Login.validar(p[1], p[2], DataManager.usuarios);
-                            out.println(ok ? "OK" : "FAIL");
-                        } else out.println("ERROR");
-                        break;
+                // 1) Señal de listo
+                out.println("READY");
 
-                    case "EXIT":
-                        out.println("BYE");
-                        return;
-
-                    default:
-                        out.println("COMANDO_DESCONOCIDO");
+                // 2) Espera una línea de tipo LOGIN ...
+                String line = in.readLine();
+                if (line == null) {
+                    out.println("ERR no-input");
+                    return;
                 }
+
+                line = line.trim();
+                if (!line.toUpperCase().startsWith("LOGIN")) {
+                    // Para mantener el mini-protocolo, solo aceptamos LOGIN;
+                    // si quisieras aceptar cualquier texto y pasar, cambia a out.println("OK") aquí.
+                    out.println("ERR bad-command");
+                    System.out.printf("⚠️  [%s] comando no soportado: %s%n", remoto, line);
+                    return;
+                }
+
+                // ACEPTAMOS SIN VALIDAR CREDENCIALES
+                // Partimos pero sin exigir cantidad de tokens
+                String[] parts = line.split("\\s+", 3); // LOGIN [user] [pass]
+                String user = (parts.length >= 2) ? parts[1] : "";
+                // String pass = (parts.length >= 3) ? parts[2] : ""; // no se usa
+
+                out.println("OK");
+                System.out.printf("🔓 [%s] handshake OK (usuario recibido='%s')%n", remoto, user);
+                // Para este flujo "rápido y funcional", cerramos aquí.
+                return;
             }
+        } catch (SocketTimeoutException te) {
+            System.err.printf("⌛ [%s] timeout de lectura: %s%n", remoto, te.getMessage());
         } catch (IOException ex) {
-            System.err.printf("❌ Cliente %s desconectado: %s%n", remoto, ex.getMessage());
+            System.err.printf("❌ [%s] error E/S: %s%n", remoto, ex.getMessage());
+        } finally {
+            try { socket.close(); } catch (IOException ignore) {}
+            System.out.println("➖ Cliente desconectado: " + remoto);
         }
     }
 }

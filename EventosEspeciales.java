@@ -30,7 +30,7 @@ public class EventosEspeciales {
 
     int entrada = Main.menuVentana(sc, "Menú de eventos especiales", nivelesEducativos);
 
-            if (entrada == 4) break;
+            if (entrada == 0) break;
 
             if (entrada < 1 || entrada > 3) {
                 System.out.println(">> Nivel educativo inválido");
@@ -68,12 +68,12 @@ public class EventosEspeciales {
                     String.format("%s ($%.2f)", nombresEventos[nivel][1], costos[nivel][1]),
                     String.format("%s ($%.2f)", nombresEventos[nivel][2], costos[nivel][2]),
                     String.format("%s ($%.2f)", nombresEventos[nivel][3], costos[nivel][3]),
-                    "Volver al menú principal"
+                    "Volver al menú anterior"
                 };
 
                 int opcionEvento = Main.menuVentana(sc, tituloEventos, opcionesEventos);
 
-                if (opcionEvento == 5) break; 
+                if (opcionEvento == 5) break; // volver al menú anterior
 
                 if (opcionEvento < 1 || opcionEvento > nombresEventos[nivel].length) {
                     System.out.println(">> Opción inválida");

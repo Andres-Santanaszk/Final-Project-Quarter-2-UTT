@@ -18,12 +18,4 @@ public class Color {
         }
         System.out.println();
     }
-
-    public static String pintar(String color, String texto) {
-        return color + texto + RESET;
-    }
-
-    public static void println(String color, String texto) {
-        System.out.println(pintar(color, texto));
-    }
 }
