@@ -22,7 +22,7 @@ public class Login {
             String user = sc.nextLine().trim();
 
             System.out.println();
-            System.out.print(Color.BLUE + "Constraseña: " + Color.RESET);
+            System.out.print(Color.BLUE + "Contraseña: " + Color.RESET);
             String pass = sc.nextLine().trim();
 
             if (validar(user, pass, usuarios)) {

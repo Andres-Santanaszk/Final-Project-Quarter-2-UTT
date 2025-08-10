@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 public class Servidor {
 
@@ -54,29 +55,36 @@ class ManejadorCliente implements Runnable {
         System.out.println("➕ Cliente conectado: " + remoto);
 
         try (BufferedReader in  = new BufferedReader(
-                 new InputStreamReader(socket.getInputStream()));
+                 new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
              PrintWriter    out = new PrintWriter(
-                 socket.getOutputStream(), true)) {
+                 new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)) {
+
+            out.println("READY");
 
             String linea;
             while ((linea = in.readLine()) != null) {
-                String[] p = linea.trim().split("\\s+");
-                if (p.length == 0) continue;
+                String cmd = linea.trim();
+                if (cmd.isEmpty()) continue;
 
-                switch (p[0].toUpperCase()) {
+                String[] p = cmd.split("\\s+");
+                String op  = p[0].toUpperCase();
+
+                switch (op) {
                     case "LOGIN":
-                        if (p.length == 3) {
-                            boolean ok = Login.validar(p[1], p[2], DataManager.usuarios);
-                            out.println(ok ? "OK" : "FAIL");
-                        } else out.println("ERROR");
+
+                        out.println("OK");
+                        System.out.printf("🔓 [%s] LOGIN aceptado%n", remoto);
+
                         break;
 
                     case "EXIT":
                         out.println("BYE");
+                        System.out.printf("👋 [%s] cierre solicitado por cliente%n", remoto);
                         return;
 
                     default:
                         out.println("COMANDO_DESCONOCIDO");
+                        System.out.printf("⚠️  [%s] comando no soportado: %s%n", remoto, cmd);
                 }
             }
         } catch (IOException ex) {

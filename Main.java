@@ -54,7 +54,7 @@ public class Main {
         }
     }
 
-    // funcion que devuelve si es posible completar el pago en base al saldo disponible y el precio del producto
+    // funcion que devuelve true si es posible completar el pago en base al saldo disponible y el precio del producto
     public static boolean procesarCobro(double precio, double saldo, String concepto) {
         if (saldo < precio) {
             System.out.println("Lo sentimos, no tienes el saldo suficiente para " + concepto);
@@ -116,9 +116,9 @@ public class Main {
         
         
         for (int i = 0; i < opciones.length; i++) {
-            System.out.print(Color.BLUE + "║  " + Color.RESET); // borde izquierdo
-            System.out.printf("%-2s %-56s", (i + 1) + ".", opciones[i]); // texto en blanco
-            System.out.println(Color.BLUE + " ║" + Color.RESET); // borde derecho
+            System.out.print(Color.BLUE + "║  " + Color.RESET); 
+            System.out.printf("%-2s %-56s", (i + 1) + ".", opciones[i]); 
+            System.out.println(Color.BLUE + " ║" + Color.RESET); 
         }
         
         System.out.println(Color.BLUE + "╚══════════════════════════════════════════════════════════════╝" + Color.RESET);

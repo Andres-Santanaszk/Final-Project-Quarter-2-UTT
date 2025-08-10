@@ -9,10 +9,10 @@ public class Cliente {
 
     public static void main(String[] args) {
 
-        String host = System.getProperty("host", "");          
+        String host = System.getProperty("host", "");
         int    port = parseOrDefault(System.getProperty("port"), 0);
 
-        if (args.length >= 1) host = args[0];          
+        if (args.length >= 1) host = args[0];
         if (args.length >= 2) port = parseOrDefault(args[1], port);
 
         if (host.isBlank())
@@ -21,51 +21,50 @@ public class Cliente {
             port = parseOrDefault(System.getenv(ENV_PORT), 5000);
 
         Scanner sc = new Scanner(System.in);
-        System.out.printf("Ingrese la IP del servidor al que desea conectarse: ", host);
+        System.out.print("Ingrese la IP del servidor al que desea conectarse: ");
         String inHost = sc.nextLine().trim();
-        if (!inHost.isEmpty()) host = inHost;       
+        if (!inHost.isEmpty()) host = inHost;
 
-        System.out.printf("Ingrese el puerto: ", port);
+        System.out.print("Ingrese el puerto: ");
         String inPort = sc.nextLine().trim();
         if (!inPort.isEmpty())
             port = parseOrDefault(inPort, port);
 
-
         System.out.printf("Conectando a %s:%d…%n", host, port);
 
         try (Socket socket = new Socket(host, port);
-             BufferedReader in  = new BufferedReader(
-                 new InputStreamReader(socket.getInputStream()));
-             PrintWriter    out = new PrintWriter(
-                 socket.getOutputStream(), true)) {
+             BufferedReader in  = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+             PrintWriter    out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true)) {
 
-            int intentos = 0;
-            while (intentos < 3) {
-                System.out.print("Usuario: ");
-                String user = sc.nextLine().trim();
-                System.out.print("Contraseña: ");
-                String pass = sc.nextLine().trim();
+            String first = in.readLine(); 
+            String rsp;
 
-                out.printf("LOGIN %s %s%n", user, pass);
-                String rsp = in.readLine();
+            if ("READY".equals(first)) {
 
-                if ("OK".equals(rsp)) {
-                    System.out.println("\n Autenticación correcta\n");
-                    Main.mostrarMenu();
-                    out.println("EXIT");
-                    return;
-                }
-                System.out.println("Credenciales incorrectas\n");
-                intentos++;
+                out.println("LOGIN demo demo");
+                rsp = in.readLine();
+            } else {
+
+                rsp = first;
             }
 
-            System.out.println("Demasiados intentos. Cerrando.");
-            sc.close();
+            if ("OK".equals(rsp)) {
+                System.out.println("\n✅ Handshake correcto con el servidor\n");
+
+                Main.main(new String[0]);
+
+                try { out.println("EXIT"); } catch (Exception ignore) {}
+            } else {
+                System.err.println("❌ Handshake fallido: " + rsp);
+            }
+
         } catch (IOException ex) {
             System.err.println("No se pudo conectar: " + ex.getMessage());
+        } finally {
+            try { sc.close(); } catch (Exception ignore) {}
         }
     }
-    
+
     private static int parseOrDefault(String val, int def) {
         if (val == null || val.isBlank()) return def;
         try { return Integer.parseInt(val.trim()); }
