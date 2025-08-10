@@ -50,9 +50,26 @@ public class Cliente {
             }
 
             if ("OK".equals(rsp)) {
-                System.out.println("\n✅ Handshake correcto con el servidor\n");
+                System.out.println("\n✅ ¡Conexión exitosa!\n");
                 // Ejecuta tu flujo real (Main -> Login.java -> mostrarMenu)
-                Main.main(new String[0]); // o Main.main(null);
+                // Capturamos el saldo ANTES de que el usuario haga operaciones
+                double saldoInicial = DataManager.saldos[DataManager.usuarioActual];
+
+                Main.main(new String[0]); // El usuario realiza todas sus operaciones aquí
+
+                // Capturamos el saldo DESPUÉS de las operaciones
+                double saldoFinal = DataManager.saldos[DataManager.usuarioActual];
+                double totalGastado = saldoInicial - saldoFinal;
+
+                // Enviamos el total real para generar el recibo
+                out.println("TOTAL " + String.format("%.2f", totalGastado));
+                String reciboRsp = in.readLine();
+                if ("RECIBO_GENERADO".equals(reciboRsp)) {
+                    System.out.println("🧾 Recibo generado en el servidor.");
+                } else {
+                    System.err.println("⚠️  No se pudo generar el recibo: " + reciboRsp);
+                }
+
                 // Notificamos salida limpia (opcional)
                 try { out.println("EXIT"); } catch (Exception ignore) {}
             } else {

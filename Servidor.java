@@ -78,6 +78,16 @@ class ManejadorCliente implements Runnable {
                         // No cerramos aún para permitir "EXIT" opcional desde el cliente
                         break;
 
+                    case "TOTAL":
+                        if (p.length > 1) {
+                            generarRecibo(p[1]);
+                            out.println("RECIBO_GENERADO");
+                            System.out.printf("📄 [%s] Recibo generado con total: %s%n", remoto, p[1]);
+                        } else {
+                            out.println("ERROR_TOTAL_INVALIDO");
+                        }
+                        break;
+
                     case "EXIT":
                         out.println("BYE");
                         System.out.printf("👋 [%s] cierre solicitado por cliente%n", remoto);
@@ -91,6 +101,17 @@ class ManejadorCliente implements Runnable {
             }
         } catch (IOException ex) {
             System.err.printf("❌ Cliente %s desconectado: %s%n", remoto, ex.getMessage());
+        }
+    }
+
+    private void generarRecibo(String total) {
+        try (PrintWriter writer = new PrintWriter("recibo.txt", StandardCharsets.UTF_8)) {
+            writer.println("--- RECIBO ---");
+            writer.println("Gracias por su preferencia.");
+            writer.println("Total gastado: $" + total);
+            writer.println("----------------");
+        } catch (IOException e) {
+            System.err.println("⚠️  Error al generar el recibo: " + e.getMessage());
         }
     }
 }
