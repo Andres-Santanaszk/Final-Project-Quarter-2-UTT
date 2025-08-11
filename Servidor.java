@@ -71,10 +71,8 @@ class ManejadorCliente implements Runnable {
 
                 switch (op) {
                     case "LOGIN":
-
                         out.println("OK");
                         System.out.printf("🔓 [%s] LOGIN aceptado%n", remoto);
-
                         break;
 
                     case "EXIT":

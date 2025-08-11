@@ -36,23 +36,19 @@ public class Cliente {
              BufferedReader in  = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
              PrintWriter    out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true)) {
 
-            String first = in.readLine(); 
+            String first = in.readLine();
             String rsp;
 
             if ("READY".equals(first)) {
-
                 out.println("LOGIN demo demo");
-                rsp = in.readLine();
+                rsp = in.readLine(); 
             } else {
-
                 rsp = first;
             }
 
             if ("OK".equals(rsp)) {
-                System.out.println("\n✅ Handshake correcto con el servidor\n");
-
-                Main.main(new String[0]);
-
+                System.out.println("\n✅ ¡Conexión exitosa!\n");
+                Main.main(new String[0]); 
                 try { out.println("EXIT"); } catch (Exception ignore) {}
             } else {
                 System.err.println("❌ Handshake fallido: " + rsp);

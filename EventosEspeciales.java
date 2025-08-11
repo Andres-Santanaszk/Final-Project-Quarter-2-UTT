@@ -62,7 +62,7 @@ public class EventosEspeciales {
 
             System.out.println("Alumno seleccionado: " + nombreIngresado);
             
-            //Te muestra los eventos y tambien los precios 
+            //muestra los eventos y tambien los precios 
             while (true) {
                 String tituloEventos = "Elija un evento: " + nombresNivel[nivel];
                 String[] opcionesEventos = {
@@ -86,7 +86,7 @@ public class EventosEspeciales {
 
                 int indice = opcionEvento - 1;
 
-                // Aqui te dice si el evento ya fue pagado para que no se pueda volver a pagar
+                //te dice si el evento ya fue pagado para que no se pueda volver a pagar
                 if (pagado[nivel][indice]) {
                     System.out.println("Este evento ya fue pagado.");
                     continue;
@@ -95,7 +95,6 @@ public class EventosEspeciales {
                 double montoEvento = costos[nivel][indice];
                 String nombreEvento = nombresEventos[nivel][indice];
 
-                //Aqui llamamos a una matriz para que pregunte si deseamos proceder con el pago  
                 if (Main.confirmarPago(sc)) {
                     if (Main.procesarCobro(montoEvento, saldo_disponible, nombreEvento)) {
                         acumulados[nivel][indice] += montoEvento;
@@ -106,7 +105,7 @@ public class EventosEspeciales {
                 }
             }
         }
-            // Es el recibo donde se muestran todos los eventos que pagamos y cuanto fue el total y lo que nos queda de dinero
+        
             System.out.println("\n=== RECIBO GENERAL DE EVENTOS ===");
             for (int i = 0; i < 3; i++) {
                 boolean tieneEventos = false;

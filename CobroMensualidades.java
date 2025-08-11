@@ -1,11 +1,13 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
+import utils.Color;
+
 public class CobroMensualidades {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        // Declaracion de variables y listas
+        // declaracion de variables y arrays
         String[] nombresNivel = {"Preescolar", "Primaria", "Secundaria"};
         String[] nombresMeses = {
             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -21,7 +23,8 @@ public class CobroMensualidades {
         double deuda_total = 0;
         double saldo_disponible = DataManager.saldos[DataManager.usuarioActual];
         double saldo_inicial = saldo_disponible;
-        // Aqui te pide que selecciones el nivel educativo
+
+        // aqui te pide que selecciones el nivel educativo
         while (true) {
             String[] nivelesEducativos = {
                 "Preescolar",
@@ -40,14 +43,14 @@ public class CobroMensualidades {
             }
 
             int nivel = entrada -1;
-                //Te pide el nombre del alumno y checa si esta o no inscrito
-                    System.out.print("Ingresa el nombre del alumno al que deseas pagar la mensualidad: ");
-            String nombreIngresado = sc.nextLine().trim();
+            //pide el nombre del alumno y verifica si esta o no inscrito
+            System.out.print("Ingrese el nombre del alumno al que desea pagar la mensualidad: ");
+            String nombreIngresado = sc.nextLine().trim().toLowerCase();
 
             boolean inscrito = Arrays.asList(DataManager.alumnosInscritos[nivel]).contains(nombreIngresado);
 
             if (!inscrito) {
-                System.out.println("Alumno no esta inscrito. Por favor, inscríbelo primero.");
+                System.out.println(Color.RED + "Alumno no inscrito. Favor de inscribirlo primero." + Color.RESET);
                 continue;
             }
 
@@ -68,7 +71,7 @@ public class CobroMensualidades {
 
                     double mensualidad = costosBase[nivel];
                     
-                    // Aqui es donde si el seleccionas marzo o abril el costo de estos meses es del doble
+                    // aqui es donde si el seleccionas marzo o abril el costo de estos meses es del doble
                     if (nombresMeses[i].equals("Marzo") || nombresMeses[i].equals("Diciembre")) {
                         mensualidad *= 2;
                     }
@@ -78,7 +81,7 @@ public class CobroMensualidades {
                     
                 int mes = Main.menuVentana(sc, "Mensualidades de " + nombresNivel[nivel], opcionesMeses);
                     
-                // Si selecciona 11 pues te manda al menu anterior
+                // si selecciona 11 te manda al menu anterior
                 if (mes == nombresMeses.length) {
                     break; 
                 }
@@ -88,7 +91,7 @@ public class CobroMensualidades {
                     continue;
                 }
 
-                // Le reste uno para que el indice iniciara bien
+                // le reste uno para que el indice iniciara bien
                 int mesIndex = mes - 1;
 
                 if (pagado[nivel][mesIndex]) {
@@ -99,11 +102,11 @@ public class CobroMensualidades {
                 double costo;
                 if (nombresMeses[mesIndex].equals("Marzo") || nombresMeses[mesIndex].equals("Diciembre")) {
                     costo = costosBase[nivel] * 2;
-                    System.out.println("Los meses de Marzo y Diciembre tiene un costo extra por las vacaciones de verano(Julio y Agosto)");
+                    System.out.println("Los meses de marzo y diciembre tienen un costo extra debido a el pago de las vacaciones de verano (julio y agosto)");
                 } else {
                     costo = costosBase[nivel];
                 }
-                    // Llama la funcion solo para confirmar el pago
+                    // llama la funcion solo para confirmar el pago
                 if (Main.confirmarPago(sc)) {
                     if (Main.procesarCobro(costo, saldo_disponible, "Mensualidad " + nombresMeses[mesIndex])) {
                         acumulados[nivel][mesIndex] += costo;
@@ -115,14 +118,14 @@ public class CobroMensualidades {
             }
         }
 
-        // Aqui se muestran las mensualidades que pago, cuando gasto en total y el saldo que le queda
+        // aqui se muestran las mensualidades que pago, cuando gasto en total y el saldo que le queda
         System.out.println("\n=== RECIBO GENERAL ===");
             for (int i = 0; i < 3; i++) {
                 boolean tieneCobros = CobrosAnuales.checarCobros(acumulados, i);
                 if (!tieneCobros) continue;
 
                 System.out.println("Nivel educativo: " + nombresNivel[i]);
-                for (int mes = 1; mes <= 10; mes++) {
+                for (int mes = 0; mes <= 10; mes++) {
                     if (acumulados[i][mes] > 0) {
                         System.out.printf("  %s: $%.2f\n", nombresMeses[mes], acumulados[i][mes]);
                         deuda_total += acumulados[i][mes];

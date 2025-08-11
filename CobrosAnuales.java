@@ -8,7 +8,6 @@ public class CobrosAnuales {
         // declaracion de variables, matrices, arrays, etc
         Scanner sc = new Scanner(System.in);
 
-            //[Nivel educativo][tipo de cobro]
         double[][] tarifas = {
             {2800, 400},  // kinder 
             {3000, 500}, // primaria
@@ -82,9 +81,9 @@ public class CobrosAnuales {
 
             while (true) {
                 String[] opcionesCobrosAnuales = {
-                    "Cobro inscripción",
-                    "Cobro mantenimiento",
-                    "Cobro opcionales",
+                    "Inscripciones",
+                    "Mantenimiento",
+                    "Opcionales",
                     "Cambiar nivel educativo" 
                 };
 
@@ -242,16 +241,16 @@ public class CobrosAnuales {
                                             }
                                         }    
                                     }
-                                        break;
+                                break; // cierra case 2
                                 default:
                                     System.out.println(">> Opción inválida");
                             }
 
-                                if (opc == 0) break; 
+                                if (opc == 0) break; // cierra el while del menu de opcionales
                             }
-                            break;
+                                break; // sale del switch(opcion)
 
-                    default:
+                        default:
                         System.out.println(">> Opción inválida");
                 }
             }
