@@ -13,8 +13,7 @@ public class EventosEspeciales {
         };
 
         double[][] costos = DataManager.costoEventos();  
-        double[][] acumulados = new double[3][4]; 
-        boolean[][] pagado = new boolean[3][4];           
+        double[][] acumulados = new double[3][4];            
 
         double deuda_total = 0;
         double saldo_disponible = DataManager.saldos[DataManager.usuarioActual];
@@ -85,9 +84,19 @@ public class EventosEspeciales {
                 }
 
                 int indice = opcionEvento - 1;
+                
+                boolean yaPagado = false;
+
+                for (int i = 0; i < DataManager.alumnosInscritos[nivel].length;i++){
+                    String registro = DataManager.alumnosInscritos[nivel][i];
+                    if (registro != null && registro.equalsIgnoreCase(nombreIngresado + "-" + nombresEventos[nivel][indice])){
+                        yaPagado = true;
+                        break;
+                    }
+                }
 
                 // Aqui te dice si el evento ya fue pagado para que no se pueda volver a pagar
-                if (pagado[nivel][indice]) {
+                if (yaPagado) {
                     System.out.println("Este evento ya fue pagado.");
                     continue;
                 }
@@ -98,8 +107,13 @@ public class EventosEspeciales {
                 //Aqui llamamos a una matriz para que pregunte si deseamos proceder con el pago  
                 if (Main.confirmarPago(sc)) {
                     if (Main.procesarCobro(montoEvento, saldo_disponible, nombreEvento)) {
+                        for (int i = 0; i < DataManager.alumnosInscritos[nivel].length; i++){
+                            if (DataManager.alumnosInscritos[nivel][i] == null){
+                                DataManager.alumnosInscritos[nivel][i] = nombreIngresado + "-" + nombreEvento;
+                                    break;
+                            }
+                        }
                         acumulados[nivel][indice] += montoEvento;
-                        pagado[nivel][indice] = true;     
                         saldo_disponible -= montoEvento; 
                         System.out.printf("Has pagado: %s por $%.2f\n", nombreEvento, montoEvento);
                     }
