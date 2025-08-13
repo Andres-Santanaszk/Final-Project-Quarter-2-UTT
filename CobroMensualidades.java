@@ -18,7 +18,6 @@ public class CobroMensualidades {
         double[] costosBase = {2500.0, 2700.0, 3000.0};
 
         double[][] acumulados = new double[3][11]; 
-        boolean[][] pagado = new boolean[3][11];
 
         double deuda_total = 0;
         double saldo_disponible = DataManager.saldos[DataManager.usuarioActual];
@@ -94,23 +93,40 @@ public class CobroMensualidades {
                 // le reste uno para que el indice iniciara bien
                 int mesIndex = mes - 1;
 
-                if (pagado[nivel][mesIndex]) {
-                    System.out.println("Este mes ya fue pagado.");
-                    continue;
-                }
+                boolean yaPagado = false;
+
+                     for (int i = 0; i < DataManager.alumnosInscritos[nivel].length;i++){
+                        String registro = DataManager.alumnosInscritos[nivel][i];
+                            if (registro != null && registro.equalsIgnoreCase(nombreIngresado + "-" + nombresMeses[mesIndex])){
+                        yaPagado = true;
+                        break;
+                        }
+                    }
+                        // Aqui te dice si el mes ya fue pagado para que no se pueda volver a pagar
+                    if (yaPagado) {
+                        System.out.println("Este mes ya fue pagado.");
+                        continue;
+                    }
+
 
                 double costo;
                 if (nombresMeses[mesIndex].equals("Marzo") || nombresMeses[mesIndex].equals("Diciembre")) {
                     costo = costosBase[nivel] * 2;
-                    System.out.println("Los meses de marzo y diciembre tienen un costo extra debido a el pago de las vacaciones de verano (julio y agosto)");
+                    System.out.println(Color.RED + "Los meses de marzo y diciembre tienen un costo extra debido a el pago de las vacaciones de verano (julio y agosto)" + Color.RESET);
                 } else {
                     costo = costosBase[nivel];
                 }
                     // llama la funcion solo para confirmar el pago
                 if (Main.confirmarPago(sc)) {
                     if (Main.procesarCobro(costo, saldo_disponible, "Mensualidad " + nombresMeses[mesIndex])) {
+                        for (int i = 0; i < DataManager.alumnosInscritos[nivel].length; i++){
+                            if (DataManager.alumnosInscritos[nivel][i] == null){
+                            DataManager.alumnosInscritos[nivel][i] = nombreIngresado + "-" + nombresMeses[mesIndex];
+                            break;
+                            }
+                        }
+                        
                         acumulados[nivel][mesIndex] += costo;
-                        pagado[nivel][mesIndex] = true;
                         saldo_disponible -= costo;
                         System.out.printf("Pagaste %s por $%.2f\n", nombresMeses[mesIndex], costo);
                     }

@@ -13,6 +13,8 @@ public class DataManager {
         {"carlos", "valeria", "jose", "camila", "esteban", null, null, null, null, null} // secundaria
     };
 
+    public static boolean[] mantPagado = {false, false, false};
+
     public static double[] saldos = {23000, 25000, 22000}; // saldos asignados por indice
 
     public static int usuarioActual = -1;

@@ -9,9 +9,9 @@ public class CobrosAnuales {
         Scanner sc = new Scanner(System.in);
 
         double[][] tarifas = {
-            {2800, 400},  // kinder 
-            {3000, 500}, // primaria
-            {4200, 600}   // secundaria
+            {2800, 1200},  // kinder 
+            {3000, 1500}, // primaria
+            {4200, 1600}   // secundaria
         };
 
         double[][] TarifaUnif = {
@@ -49,7 +49,6 @@ public class CobrosAnuales {
         double[][] acumulados = new double[3][2];     
         double[][] acumuladosPap = new double[3][1];  
         double [][] acumuladosUnif = new double[3][4];
-        boolean[] mantPagado = new boolean[3];
     
         double deuda_total = 0;
         //parte de la logica para asignar saldo en base a un usuario
@@ -117,9 +116,9 @@ public class CobrosAnuales {
                         }
                         break;
                     case 2:
-                        if (mantPagado[nivelEducativo]) {
+                        if (DataManager.mantPagado[nivelEducativo]) {
                                 System.out.println();
-                                System.out.println("Usted ya ha pagado el mantenimiento en el nivel educativo: " + nombresNivel[nivelEducativo] + ".");
+                                System.out.println(Color.RED + "Usted ya ha pagado el mantenimiento en el nivel educativo: " + nombresNivel[nivelEducativo] + "." + Color.RESET);
                                 break;
                             }
                         tipo = 1;
@@ -153,11 +152,14 @@ public class CobrosAnuales {
                         System.out.println(Color.BLUE + " ║" + Color.RESET);
                         System.out.println(Color.BLUE + "╚══════════════════════════════════════════════════════════════╝" + Color.RESET);
 
+                        System.out.println(Color.RED + "\nEl mantenimiento es un solo pago por tutor/padre de familia y nivel educativo." + Color.RESET);
+                        System.out.println();
+
                         if (Main.confirmarPago(sc)) {
                             if (Main.procesarCobro(monto, saldo_disponible, "Mantenimiento")) {
                                 acumulados[nivelEducativo][tipo] += monto;
                                 saldo_disponible -= monto;
-                                mantPagado[nivelEducativo] = true;
+                                DataManager.mantPagado[nivelEducativo] = true;
                                 System.out.printf("Pago de mantenimiento registrado a nivel educativo %s por $%.2f\n", nombresNivel[nivelEducativo], monto);           
                                 }
                             }
@@ -206,7 +208,7 @@ public class CobrosAnuales {
                                             if (Main.procesarCobro(montoPap, saldo_disponible, nombresPapeleria[indice])) {
                                                 acumuladosPap[nivelEducativo][0] += montoPap;  
                                                 saldo_disponible -= montoPap;
-                                                System.out.printf("  Compraste: %s por $%.2f\n", nombresPapeleria[indice], montoPap);
+                                                System.out.printf("Compraste: %s por $%.2f\n", nombresPapeleria[indice], montoPap);
                                             }
                                         }
                                     }
